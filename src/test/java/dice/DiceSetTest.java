@@ -4,18 +4,19 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for dice.Dice functionality.
+ * Test class for DiceSet functionality.
  * Tests creation, rolling, and value retrieval of multiple dice.
  */
-class DiceTest {
+class DiceSetTest {
 
     /**
-     * Tests that dice can be created with a valid number of dice.
+     * Tests that dice can be created with valid numbers.
      */
     @Test
     void testDiceCreationWithValidNumber() {
-        DiceSet dice = new DiceSet(2);
-        assertEquals(2, dice.getNumberOfDice(), "Should create correct number of dice");
+        DiceSet diceSet = new DiceSet(2);
+        assertEquals(2, diceSet.getNumberOfDice(),
+                "Should create correct number of dice");
     }
 
     /**
@@ -27,6 +28,8 @@ class DiceTest {
                 "Should throw exception when creating dice with 0");
         assertThrows(IllegalArgumentException.class, () -> new DiceSet(-1),
                 "Should throw exception when creating dice with negative number");
+        assertThrows(IllegalArgumentException.class, () -> new DiceSet(11),
+                "Should throw exception when creating dice exceeding maximum");
     }
 
     /**
@@ -34,9 +37,9 @@ class DiceTest {
      */
     @Test
     void testRollReturnsValidSum() {
-        DiceSet dice = new DiceSet(2);
-        for (int i = 0; i < 50; i++) {
-            int result = dice.roll();
+        DiceSet diceSet = new DiceSet(2);
+        for (int i = 0; i < 100; i++) {
+            int result = diceSet.roll();
             assertTrue(result >= 2 && result <= 12,
                     "Roll with 2 dice should return sum between 2 and 12");
         }
@@ -47,11 +50,11 @@ class DiceTest {
      */
     @Test
     void testGetDieWithValidIndex() {
-        DiceSet dice = new DiceSet(2);
-        dice.roll();
+        DiceSet diceSet = new DiceSet(2);
+        diceSet.roll();
 
-        int firstDie = dice.getDie(0);
-        int secondDie = dice.getDie(1);
+        int firstDie = diceSet.getDie(0);
+        int secondDie = diceSet.getDie(1);
 
         assertTrue(firstDie >= 1 && firstDie <= 6,
                 "First die value should be between 1 and 6");
@@ -64,11 +67,11 @@ class DiceTest {
      */
     @Test
     void testGetDieWithInvalidIndex() {
-        DiceSet dice = new DiceSet(2);
+        DiceSet diceSet = new DiceSet(2);
 
-        assertThrows(IllegalArgumentException.class, () -> dice.getDie(-1),
+        assertThrows(IllegalArgumentException.class, () -> diceSet.getDie(-1),
                 "Should throw exception when accessing negative index");
-        assertThrows(IllegalArgumentException.class, () -> dice.getDie(2),
+        assertThrows(IllegalArgumentException.class, () -> diceSet.getDie(2),
                 "Should throw exception when accessing index >= number of dice");
     }
 
@@ -77,21 +80,21 @@ class DiceTest {
      */
     @Test
     void testRollUpdatesAllDice() {
-        DiceSet dice = new DiceSet(2);
+        DiceSet diceSet = new DiceSet(2);
 
         // First roll to get initial values
-        dice.roll();
-        int initialFirst = dice.getDie(0);
-        int initialSecond = dice.getDie(1);
+        diceSet.roll();
+        int initialFirst = diceSet.getDie(0);
+        int initialSecond = diceSet.getDie(1);
 
         // Roll multiple times to ensure values change
         boolean firstChanged = false;
         boolean secondChanged = false;
 
         for (int i = 0; i < 100 && !(firstChanged && secondChanged); i++) {
-            dice.roll();
-            if (dice.getDie(0) != initialFirst) firstChanged = true;
-            if (dice.getDie(1) != initialSecond) secondChanged = true;
+            diceSet.roll();
+            if (diceSet.getDie(0) != initialFirst) firstChanged = true;
+            if (diceSet.getDie(1) != initialSecond) secondChanged = true;
         }
 
         assertTrue(firstChanged && secondChanged,
@@ -103,9 +106,10 @@ class DiceTest {
      */
     @Test
     void testSumMatchesIndividualDice() {
-        DiceSet dice = new DiceSet(2);
-        int total = dice.roll();
-        assertEquals(total, dice.getDie(0) + dice.getDie(1),
+        DiceSet diceSet = new DiceSet(2);
+        int total = diceSet.roll();
+        assertEquals(total, diceSet.getDie(0) + diceSet.getDie(1),
                 "Sum should equal individual die values");
     }
+
 }
