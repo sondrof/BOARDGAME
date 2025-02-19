@@ -1,9 +1,11 @@
+package dice;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for Die functionality.
+ * Test class for dice.Die functionality.
  * Tests the behavior of a single six-sided die, including
  * rolling and value retrieval.
  */
@@ -19,7 +21,7 @@ class DieTest {
         for (int i = 0; i < 50; i++) {
             int result = die.roll();
             assertTrue(result >= 1 && result <= 6,
-                    "Die roll should return value between 1 and 6");
+                    "dice.Die roll should return value between 1 and 6");
         }
     }
 
@@ -69,6 +71,6 @@ class DieTest {
         }
 
         assertTrue(differentFound,
-                "Die should produce different values over multiple rolls");
+                "dice.Die should produce different values over multiple rolls");
     }
 }

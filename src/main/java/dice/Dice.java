@@ -1,3 +1,5 @@
+package dice;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,11 +59,11 @@ public class Dice {
     public int getDie(int dieNumber) {
         if (dieNumber < 0) {
             throw new IllegalArgumentException(
-                    "Die number cannot be negative, got: " + dieNumber);
+                    "dice.Die number cannot be negative, got: " + dieNumber);
         }
         if (dieNumber >= dice.size()) {
             throw new IllegalArgumentException(
-                    "Die number " + dieNumber + " exceeds number of dice (" +
+                    "dice.Die number " + dieNumber + " exceeds number of dice (" +
                             dice.size() + ")");
         }
         return dice.get(dieNumber).getValue();

@@ -1,8 +1,10 @@
+package dice;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for Dice functionality.
+ * Test class for dice.Dice functionality.
  * Tests creation, rolling, and value retrieval of multiple dice.
  */
 class DiceTest {

@@ -1,3 +1,5 @@
+package dice;
+
 import java.util.Random;
 
 /**
