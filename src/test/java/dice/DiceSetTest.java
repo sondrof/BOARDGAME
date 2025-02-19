@@ -82,12 +82,10 @@ class DiceSetTest {
     void testRollUpdatesAllDice() {
         DiceSet diceSet = new DiceSet(2);
 
-        // First roll to get initial values
         diceSet.roll();
         int initialFirst = diceSet.getDie(0);
         int initialSecond = diceSet.getDie(1);
 
-        // Roll multiple times to ensure values change
         boolean firstChanged = false;
         boolean secondChanged = false;
 
