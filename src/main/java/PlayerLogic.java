@@ -1,6 +1,6 @@
 import dice.DiceSet;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 
 
@@ -8,6 +8,22 @@ public class PlayerLogic {
 
   private DiceSet diceSet;
   private ArrayList<Player> playerList = new ArrayList<>();
+
+  public PlayerLogic(DiceSet diceSet) {
+    this.diceSet = diceSet;
+    this.playerList = new ArrayList<>();
+  }
+
+  public void addPlayer(String name) {
+    int id = playerList.size() + 1;
+    playerList.add(new Player(name, 0, id));
+  }
+
+  public void printPlayerStatus() {
+    for (Player player : playerList) {
+      System.out.println("Player " + player.getPlayerName() + " on tile " + player.getPlayerPos());
+    }
+  }
 
   public void generatePlayers(int amountOfPlayers) {
     for (int i = 0; i < amountOfPlayers; i++) {

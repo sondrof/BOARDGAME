@@ -32,4 +32,14 @@ public class TileLogic {
       System.out.println(tile.getTileNumber());
     }
   }
+
+  public Tile getTileByNumber(int number) {
+    for (Tile tile : tileList) {
+      if (tile.getTileNumber() == number) {
+        return tile;
+      }
+    }
+    return null;
+  }
+
 }
