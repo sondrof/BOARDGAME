@@ -42,4 +42,13 @@ public class TileLogic {
     return null;
   }
 
+  public void setSpecialTile(int tileNumber, int specialValue) {
+    Tile tile = getTileByNumber(tileNumber);
+    if (tile != null) {
+      tile.setSpecialValue(specialValue);
+      int destination = tileNumber + specialValue;
+      System.out.println("Added ladder from " + tileNumber + " to " + destination);
+    }
+  }
+
 }

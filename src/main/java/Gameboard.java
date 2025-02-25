@@ -18,12 +18,29 @@ public class Gameboard {
     public void initBoard() {
         tileLogic.generateTiles(BOARD_SIZE);
 
-        // Ask for number of players
+
+        tileLogic.setSpecialTile(4, 10);
+        tileLogic.setSpecialTile(8, 22);
+        tileLogic.setSpecialTile(28, 48);
+        tileLogic.setSpecialTile(40, 36);
+        tileLogic.setSpecialTile(80, 19);
+
+
+        tileLogic.setSpecialTile(17, -10);
+        tileLogic.setSpecialTile(54, -20);
+        tileLogic.setSpecialTile(62, -43);
+        tileLogic.setSpecialTile(64, -4);
+        tileLogic.setSpecialTile(87, -63);
+        tileLogic.setSpecialTile(93, -20);
+        tileLogic.setSpecialTile(95, -20);
+        tileLogic.setSpecialTile(99, -21);
+
+
         System.out.println("How many players? ");
         int numberOfPlayers = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        scanner.nextLine();
 
-        // Get player names
+
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("Enter name for player " + (i + 1) + ": ");
             String playerName = scanner.nextLine();

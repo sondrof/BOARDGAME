@@ -17,7 +17,7 @@ public class GameboardLogic {
         int newPos = player.getPlayerPos() + tile.getSpecialValue();
         player.setPlayerPos(newPos);
 
-        String moveType = tile.getSpecialValue() > 0 ? "climbed a ladder to" : "slid down a snake to";
+        String moveType = tile.getSpecialValue() > 0 ? "climbed a ladder to" : "falled down a ladder to";
         System.out.println(player.getPlayerName() + " " + moveType + " " + newPos);
     }
 
