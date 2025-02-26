@@ -1,4 +1,10 @@
+package game;
+
 import dice.DiceSet;
+import players.Player;
+import players.PlayerLogic;
+import tiles.TileLogic;
+
 import java.util.Scanner;
 
 public class Gameboard {

@@ -1,3 +1,5 @@
+package players;
+
 import dice.DiceSet;
 
 
@@ -21,13 +23,13 @@ public class PlayerLogic {
 
   public void printPlayerStatus() {
     for (Player player : playerList) {
-      System.out.println("Player " + player.getPlayerName() + " on tile " + player.getPlayerPos());
+      System.out.println("players.Player " + player.getPlayerName() + " on tile " + player.getPlayerPos());
     }
   }
 
   public void generatePlayers(int amountOfPlayers) {
     for (int i = 0; i < amountOfPlayers; i++) {
-      playerList.add(new Player("Player" + (i + 1), 0, i + 1));
+      playerList.add(new Player("players.Player" + (i + 1), 0, i + 1));
     }
   }
 
@@ -47,7 +49,7 @@ public class PlayerLogic {
   public void movePlayer(int playerId) {
     Player player = getPlayerById(playerId);
     if (player == null) {
-      System.out.println("Player not found");
+      System.out.println("players.Player not found");
       return;
     }
 

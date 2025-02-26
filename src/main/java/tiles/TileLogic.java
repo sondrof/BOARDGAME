@@ -1,3 +1,5 @@
+package tiles;
+
 import java.util.ArrayList;
 
 public class TileLogic {

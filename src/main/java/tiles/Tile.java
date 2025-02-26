@@ -1,4 +1,4 @@
-
+package tiles;
 
 public class Tile {
   private int tileNumber = 0;
@@ -13,7 +13,7 @@ public class Tile {
 
   public void setTileNumber(int tileNumber) {
     if (tileNumber < 0) {
-      throw new NullPointerException("Tile must be assigned legal tileNumber");
+      throw new NullPointerException("tiles.Tile must be assigned legal tileNumber");
     }
     this.tileNumber = tileNumber;
   }

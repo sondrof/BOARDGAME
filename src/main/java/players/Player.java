@@ -1,3 +1,5 @@
+package players;
+
 public class Player {
   private String playerName = "";
   private int playerPos = 0;

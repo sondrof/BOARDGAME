@@ -1,3 +1,5 @@
+import game.Gameboard;
+
 public class main {
   public static void main(String[] args) {
     Gameboard game = new Gameboard();
