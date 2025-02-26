@@ -23,7 +23,7 @@ public class PlayerLogic {
 
   public void printPlayerStatus() {
     for (Player player : playerList) {
-      System.out.println("players.Player " + player.getPlayerName() + " on tile " + player.getPlayerPos());
+      System.out.println("Player " + player.getPlayerName() + " on tile " + player.getPlayerPos());
     }
   }
 
