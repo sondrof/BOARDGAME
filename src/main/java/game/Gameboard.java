@@ -5,6 +5,8 @@ import players.Player;
 import players.PlayerLogic;
 import tiles.TileLogic;
 
+import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Gameboard {
@@ -25,26 +27,9 @@ public class Gameboard {
         tileLogic.generateTiles(BOARD_SIZE);
 
 
-        tileLogic.setSpecialTile(4, 10);
-        tileLogic.setSpecialTile(8, 22);
-        tileLogic.setSpecialTile(28, 48);
-        tileLogic.setSpecialTile(40, 36);
-        tileLogic.setSpecialTile(80, 19);
+        setUpLadders();
 
-
-        tileLogic.setSpecialTile(17, -10);
-        tileLogic.setSpecialTile(54, -20);
-        tileLogic.setSpecialTile(62, -43);
-        tileLogic.setSpecialTile(64, -4);
-        tileLogic.setSpecialTile(87, -63);
-        tileLogic.setSpecialTile(93, -20);
-        tileLogic.setSpecialTile(95, -20);
-        tileLogic.setSpecialTile(99, -21);
-
-
-        System.out.println("How many players? ");
-        int numberOfPlayers = scanner.nextInt();
-        scanner.nextLine();
+        int numberOfPlayers = getValidPlayerCount();
 
 
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -57,6 +42,47 @@ public class Gameboard {
         for (Player player : playerLogic.getPlayerList()) {
             System.out.println("Name: " + player.getPlayerName());
         }
+    }
+
+    private int getValidPlayerCount() {
+        while (true) {
+            try {
+                System.out.println("How many players? (2-6): ");
+                int count = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+                if (count >= 2 && count <= 6) {
+                    return count;
+                }
+                System.out.println("Please enter a number between 2 and 6");
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid number");
+                scanner.nextLine(); // clear invalid input
+            }
+        }
+    }
+
+    private void setUpLadders(){
+        Map<Integer, Integer>  upLadders = Map.of(
+                4, 10,
+                8, 22,
+                28, 48,
+                40, 36,
+                80, 19
+        );
+
+        Map<Integer, Integer> downLadders = Map.of(
+                17, -10,
+                54, -20,
+                62, -43,
+                64, -4,
+                87, -63,
+                93, -20,
+                95, -20,
+                99, -21
+        );
+
+        upLadders.forEach(tileLogic::setSpecialTile);
+        downLadders.forEach(tileLogic::setSpecialTile);
     }
 
     public void playRound() {

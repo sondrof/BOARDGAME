@@ -8,13 +8,17 @@ public class GameboardLogic {
     private static final int BOARD_SIZE = 100;
 
     public void handlePlayerLanding(Player player, TileLogic tileLogic) {
-        if (player.getPlayerPos() >= BOARD_SIZE) {
-            player.setPlayerPos(BOARD_SIZE); // Set to exactly 100
-            return;
+        int currentPos = player.getPlayerPos();
+
+        if (currentPos > BOARD_SIZE) {
+            int bounce = currentPos - BOARD_SIZE;
+            currentPos = BOARD_SIZE - bounce;
+            player.setPlayerPos(currentPos);
+            System.out.println(player.getPlayerName() + " bounced back to " + currentPos);
         }
 
-        Tile currentTile = tileLogic.getTileByNumber(player.getPlayerPos());
-        if (currentTile.getSpecialValue() != 0) {
+        Tile currentTile = tileLogic.getTileByNumber(currentPos);
+        if (currentTile != null && currentTile.getSpecialValue() != 0) {
             movePlayerSpecial(player, currentTile);
         }
     }
