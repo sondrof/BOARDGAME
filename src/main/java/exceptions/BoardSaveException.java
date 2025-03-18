@@ -1,4 +1,7 @@
 package exceptions;
 
-public class BoardSaveException {
+public class BoardSaveException extends Exception {
+    public BoardSaveException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
