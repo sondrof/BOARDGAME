@@ -7,15 +7,15 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PlayerFileHandler {
 
     private static final String PLAYER_FILE_PATH = "src/main/resources/players.csv";
 
-  static void savePlayers(List<Player> players) throws PlayerSaveException {
+
+    public static void savePlayers(List<Player> players) throws PlayerSaveException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PLAYER_FILE_PATH))) {
             for (Player player : players) {
-                writer.println(player.getPlayerName() + "," + player.getPlayerId());
+                writer.println(player.getPlayerName() + "," + player.getPlayerId() + "," + player.getPlayerToken() + "," + player.getPlayerPos());
             }
         } catch (IOException e) {
             throw new PlayerSaveException("Failed to save players to CSV", e);
@@ -35,10 +35,15 @@ public class PlayerFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length >= 2) {
+
+                // Ensure correct format (name, id, token, position)
+                if (parts.length == 4) {
                     String name = parts[0];
                     int id = Integer.parseInt(parts[1]);
-                    players.add(new Player(name, 0, id)); // Start at position 0
+                    String token = parts[2];
+                    int position = Integer.parseInt(parts[3]);
+
+                    players.add(new Player(name, id, token, position));
                 }
             }
             return players;
@@ -46,6 +51,4 @@ public class PlayerFileHandler {
             throw new PlayerLoadException("Failed to load players from CSV", e);
         }
     }
-
-
 }

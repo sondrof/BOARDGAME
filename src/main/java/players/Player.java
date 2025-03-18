@@ -2,13 +2,25 @@ package players;
 
 public class Player {
   private String playerName = "";
-  private int playerPos = 0;
   private int playerId = 0;
+  private String playerToken = "";
+  private int playerPos = 0;
 
-  public Player(String playerName, int playerPos, int playerId) {
+
+
+  public Player(String playerName, int playerId, String token) {
     setPlayerName(playerName);
-    setPlayerPos(playerPos);
     setPlayerId(playerId);
+    setPlayerToken(token);
+    this.playerPos = 0;
+  }
+
+
+  public Player(String playerName, int playerId, String token, int playerPos) {
+    setPlayerName(playerName);
+    setPlayerId(playerId);
+    setPlayerToken(token);
+    setPlayerPos(playerPos);
   }
 
 
@@ -45,10 +57,13 @@ public class Player {
     return playerId;
   }
 
-  
+  public String getPlayerToken() {
+    return playerToken;
+  }
 
-
-
+  public void setPlayerToken(String token) {
+    this.playerToken = token;
+  }
 
 
 

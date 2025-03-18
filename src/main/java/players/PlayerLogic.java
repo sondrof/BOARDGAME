@@ -16,7 +16,7 @@ public class PlayerLogic {
 
   public void addPlayer(String name) {
     int id = playerList.size() + 1;
-    playerList.add(new Player(name, 0, id));
+    playerList.add(new Player(name,id,"DefaultToken"));
   }
 
   public void printPlayerStatus() {
@@ -27,7 +27,7 @@ public class PlayerLogic {
 
   public void generatePlayers(int amountOfPlayers) {
     for (int i = 0; i < amountOfPlayers; i++) {
-      playerList.add(new Player("players.Player" + (i + 1), 0, i + 1));
+      playerList.add(new Player("Player" + (i + 1), i + 1, "DefaultToken"));
     }
   }
 
