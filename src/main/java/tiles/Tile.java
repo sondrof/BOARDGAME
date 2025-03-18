@@ -13,7 +13,7 @@ public class Tile {
 
   public void setTileNumber(int tileNumber) {
     if (tileNumber < 0) {
-      throw new NullPointerException("tiles.Tile must be assigned legal tileNumber");
+      throw new IllegalArgumentException("Tile number cannot be negative, got: " + tileNumber);
     }
     this.tileNumber = tileNumber;
   }

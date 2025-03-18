@@ -1,8 +1,6 @@
 package players;
 
 import dice.DiceSet;
-
-
 import java.util.ArrayList;
 
 
@@ -43,14 +41,13 @@ public class PlayerLogic {
         return player;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Player with id " + playerId + " not found");
   }
 
   public void movePlayer(int playerId) {
     Player player = getPlayerById(playerId);
     if (player == null) {
-      System.out.println("players.Player not found");
-      return;
+      throw new IllegalArgumentException("Player not found: " + playerId);
     }
 
     int roll = diceSet.roll();

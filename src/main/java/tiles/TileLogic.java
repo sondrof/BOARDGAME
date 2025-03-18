@@ -19,7 +19,7 @@ public class TileLogic {
 
   public void generateTiles(int numberOfTiles) {
     tileList.clear(); // Clear the list to avoid duplicate tiles if method is called multiple times
-    for (int tilenumber = 0; tilenumber <= numberOfTiles; tilenumber++) {
+    for (int tilenumber = 1; tilenumber <= numberOfTiles; tilenumber++) {
       Tile newTile = new Tile(tilenumber, 0);
       addTile(newTile);
     }

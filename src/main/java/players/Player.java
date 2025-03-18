@@ -24,6 +24,9 @@ public class Player {
   }
 
   public void setPlayerPos(int newPlayerPos) {
+    if (newPlayerPos < 0) {
+      throw new IllegalArgumentException("Player position can not be negative");
+    }
     this.playerPos = newPlayerPos;
   }
 
@@ -32,6 +35,9 @@ public class Player {
   }
 
   public void setPlayerId(int playerId) {
+    if (playerId <= 0) {
+      throw new IllegalArgumentException("Player id can not be negative");
+    }
     this.playerId = playerId;
   }
 
