@@ -5,6 +5,7 @@ import players.Player;
 import players.PlayerLogic;
 import tiles.TileLogic;
 
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -28,10 +29,7 @@ public class Gameboard {
 
         setUpLadders();
 
-
-        System.out.println("How many players? ");
-        int numberOfPlayers = scanner.nextInt();
-        scanner.nextLine();
+        int numberOfPlayers = getValidPlayerCount();
 
 
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -43,6 +41,23 @@ public class Gameboard {
         System.out.println("The following players are playing the game:");
         for (Player player : playerLogic.getPlayerList()) {
             System.out.println("Name: " + player.getPlayerName());
+        }
+    }
+
+    private int getValidPlayerCount() {
+        while (true) {
+            try {
+                System.out.println("How many players? (2-6): ");
+                int count = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+                if (count >= 2 && count <= 6) {
+                    return count;
+                }
+                System.out.println("Please enter a number between 2 and 6");
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a valid number");
+                scanner.nextLine(); // clear invalid input
+            }
         }
     }
 
