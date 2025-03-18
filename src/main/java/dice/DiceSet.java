@@ -56,14 +56,13 @@ public class DiceSet {
      * For example, with 2 dice, the possible sum range is 2-12.
      *
      * @return the sum of all dice rolls
-
      */
     public int roll() {
         int total = 0;
         for (Die die : dice) {
             total += die.roll();
         }
-        return (int) total;
+        return total;
     }
 
     /**
