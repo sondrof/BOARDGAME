@@ -1,6 +1,8 @@
 package tiles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TileLogic {
   private int numberOfTiles = 0;
@@ -51,6 +53,16 @@ public class TileLogic {
       int destination = tileNumber + specialValue;
       System.out.println("Added ladder from " + tileNumber + " to " + destination);
     }
+  }
+
+  public Map<Integer, Integer> getSpecialTilesMap() {
+    Map<Integer, Integer> specialTiles = new HashMap<>();
+    for (Tile tile : tileList) {
+      if (tile.getSpecialValue() != 0) {
+        specialTiles.put(tile.getTileNumber(), tile.getSpecialValue());
+      }
+    }
+    return specialTiles;
   }
 
 }

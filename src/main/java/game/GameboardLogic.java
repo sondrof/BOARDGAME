@@ -39,4 +39,8 @@ public class GameboardLogic {
     public boolean checkWinCondition(Player player) {
         return player.getPlayerPos() >= BOARD_SIZE;
     }
+
+    public int getBoardSize() {
+        return BOARD_SIZE;
+    }
 }
