@@ -4,8 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for Player functionality.
+ * Tests player creation, property getters and setters, and validation logic.
+ */
 class PlayerTest {
 
+    /**
+     * Tests that a player can be created with valid name and token.
+     */
     @Test
     void testPlayerWithValidParameters() {
         Player player = new Player("Zoro","Swords");
@@ -14,6 +21,9 @@ class PlayerTest {
         assertEquals(0, player.getPlayerPosition());
     }
 
+    /**
+     * Tests that creating a player with invalid parameters throws exceptions.
+     */
     @Test
     void testPlayerWithInvalidParameters() {
         assertThrows(IllegalArgumentException.class, () -> new Player("","Katana"));
@@ -22,6 +32,9 @@ class PlayerTest {
         assertThrows(IllegalArgumentException.class, () -> new Player("Miyamoto",null));
     }
 
+    /**
+     * Tests setting a valid player name.
+     */
     @Test
     void testSetValidPlayerName(){
         Player player = new Player("Zoro","Swords");
@@ -29,6 +42,9 @@ class PlayerTest {
         assertEquals("Goat", player.getPlayerName());
     }
 
+    /**
+     * Tests that setting invalid player names throws exceptions.
+     */
     @Test
     void testSetInvalidPlayerName(){
         Player player = new Player("Zoro","Swords");
@@ -36,6 +52,9 @@ class PlayerTest {
         assertThrows(IllegalArgumentException.class, () -> player.setPlayerToken(null));
     }
 
+    /**
+     * Tests setting a valid player token.
+     */
     @Test
     void testSetValidPlayerToken(){
         Player player = new Player("Zoro","Swords");
@@ -43,6 +62,9 @@ class PlayerTest {
         assertEquals("Bandana", player.getPlayerToken());
     }
 
+    /**
+     * Tests that setting invalid player tokens throws exceptions.
+     */
     @Test
     void testSetInvalidPlayerToken(){
         Player player = new Player("Zoro","Swords");
@@ -50,6 +72,9 @@ class PlayerTest {
         assertThrows(IllegalArgumentException.class, () -> player.setPlayerToken(null));
     }
 
+    /**
+     * Tests setting valid player positions.
+     */
     @Test
     void testSetValidPlayerPosition(){
         Player player = new Player("Zoro","Swords");
@@ -61,6 +86,9 @@ class PlayerTest {
         assertEquals(95, player.getPlayerPosition());
     }
 
+    /**
+     * Tests that setting invalid player positions throws exceptions.
+     */
     @Test
     void testSetInvalidPlayerPosition(){
         Player player = new Player("Zoro","Swords");
