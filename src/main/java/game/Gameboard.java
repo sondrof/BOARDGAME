@@ -88,8 +88,9 @@ public class Gameboard {
     public void playRound() {
         System.out.println("Round number " + roundNumber);
 
-        for (Player player : playerLogic.getPlayerList()) {
-            playerLogic.movePlayer(player.getPlayerId());
+        for (int i = 0; i < playerLogic.getPlayerList().size(); i++) {
+            Player player = playerLogic.getPlayerList().get(i);
+            playerLogic.movePlayer(i);
 
             gameboardLogic.handlePlayerLanding(player, tileLogic);
 

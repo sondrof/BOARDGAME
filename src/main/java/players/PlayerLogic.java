@@ -15,8 +15,7 @@ public class PlayerLogic {
   }
 
   public void addPlayer(String name) {
-    int id = playerList.size() + 1;
-    playerList.add(new Player(name,id,"DefaultToken"));
+    playerList.add(new Player(name,"DefaultToken"));
   }
 
   public void printPlayerStatus() {
@@ -27,7 +26,7 @@ public class PlayerLogic {
 
   public void generatePlayers(int amountOfPlayers) {
     for (int i = 0; i < amountOfPlayers; i++) {
-      playerList.add(new Player("Player" + (i + 1), i + 1, "DefaultToken"));
+      playerList.add(new Player("Player" + (i + 1), "DefaultToken"));
     }
   }
 
@@ -35,26 +34,14 @@ public class PlayerLogic {
     return playerList;
   }
 
-  private Player getPlayerById(int playerId) {
-    for (Player player : playerList) {
-      if (player.getPlayerId() == playerId) {
-        return player;
-      }
-    }
-    throw new IllegalArgumentException("Player with id " + playerId + " not found");
-  }
-
-  public void movePlayer(int playerId) {
-    Player player = getPlayerById(playerId);
-    if (player == null) {
-      throw new IllegalArgumentException("Player not found: " + playerId);
+  public void movePlayer(int playerIndex) {
+    if (playerIndex < 0 || playerIndex >= playerList.size()) {
+      throw new IllegalArgumentException("Invalid player index: " + playerIndex);
     }
 
+    Player player = playerList.get(playerIndex);
     int roll = diceSet.roll();
     player.setPlayerPosition(player.getPlayerPosition() + roll);
     System.out.println(player.getPlayerName() + " rolled " + roll + ", moved to position " + player.getPlayerPosition());
   }
-
-
-
 }

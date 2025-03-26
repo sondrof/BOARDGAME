@@ -15,7 +15,7 @@ public class PlayerFileHandler {
     public static void savePlayers(List<Player> players) throws PlayerSaveException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PLAYER_FILE_PATH))) {
             for (Player player : players) {
-                writer.println(player.getPlayerName() + "," + player.getPlayerId() + "," + player.getPlayerToken() + "," + player.getPlayerPosition());
+                writer.println(player.getPlayerName() + "," + player.getPlayerToken() + "," + player.getPlayerPosition());
             }
         } catch (IOException e) {
             throw new PlayerSaveException("Failed to save players to CSV", e);
@@ -37,13 +37,14 @@ public class PlayerFileHandler {
                 String[] parts = line.split(",");
 
 
-                if (parts.length == 4) {
+                if (parts.length == 3) {
                     String name = parts[0];
-                    int id = Integer.parseInt(parts[1]);
-                    String token = parts[2];
-                    int position = Integer.parseInt(parts[3]);
+                    String token = parts[1];
+                    int position = Integer.parseInt(parts[2]);
 
-                    players.add(new Player(name, id, token, position));
+                    Player player = new Player(name, token);
+                    player.setPlayerPosition(position);
+                    players.add(player);
                 }
             }
             return players;
