@@ -15,7 +15,7 @@ public class PlayerFileHandler {
     public static void savePlayers(List<Player> players) throws PlayerSaveException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PLAYER_FILE_PATH))) {
             for (Player player : players) {
-                writer.println(player.getPlayerName() + "," + player.getPlayerId() + "," + player.getPlayerToken() + "," + player.getPlayerPos());
+                writer.println(player.getPlayerName() + "," + player.getPlayerId() + "," + player.getPlayerToken() + "," + player.getPlayerPosition());
             }
         } catch (IOException e) {
             throw new PlayerSaveException("Failed to save players to CSV", e);
@@ -28,7 +28,7 @@ public class PlayerFileHandler {
         File file = new File(PLAYER_FILE_PATH);
 
         if (!file.exists()) {
-            return players; // Return empty list if file doesn't exist yet
+            return players;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -36,7 +36,7 @@ public class PlayerFileHandler {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                // Ensure correct format (name, id, token, position)
+
                 if (parts.length == 4) {
                     String name = parts[0];
                     int id = Integer.parseInt(parts[1]);

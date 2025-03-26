@@ -1,32 +1,20 @@
 package players;
 
 public class Player {
-  private String playerName = "";
-  private int playerId = 0;
-  private String playerToken = "";
-  private int playerPos = 0;
+  private String playerName;
+  private String playerToken;
+  private int playerPosition;
 
 
-
-  public Player(String playerName, int playerId, String token) {
+  public Player(String playerName, String playerToken) {
     setPlayerName(playerName);
-    setPlayerId(playerId);
-    setPlayerToken(token);
-    this.playerPos = 0;
+    setPlayerToken(playerToken);
+    this.playerPosition = 0;
   }
-
-
-  public Player(String playerName, int playerId, String token, int playerPos) {
-    setPlayerName(playerName);
-    setPlayerId(playerId);
-    setPlayerToken(token);
-    setPlayerPos(playerPos);
-  }
-
 
   public void setPlayerName(String playerName) {
-    if (playerName.isBlank()) {
-      throw new IllegalArgumentException("Name can not be blank");
+    if (playerName == null || playerName.isBlank()) {
+      throw new IllegalArgumentException("Player cannot be blank");
     }
     this.playerName = playerName;
   }
@@ -35,36 +23,28 @@ public class Player {
     return playerName;
   }
 
-  public void setPlayerPos(int newPlayerPos) {
-    if (newPlayerPos < 0) {
+  public void setPlayerPosition(int playerPosition) {
+    if (playerPosition < 0) {
       throw new IllegalArgumentException("Player position can not be negative");
     }
-    this.playerPos = newPlayerPos;
+    this.playerPosition = playerPosition;
   }
 
-  public int getPlayerPos() {
-    return playerPos;
+  public int getPlayerPosition() {
+    return playerPosition;
   }
 
-  public void setPlayerId(int playerId) {
-    if (playerId <= 0) {
-      throw new IllegalArgumentException("Player id can not be negative");
+
+  public void setPlayerToken(String token) {
+    if (token == null || token.isBlank()) {
+      throw new IllegalArgumentException("Player token cannot be blank");
     }
-    this.playerId = playerId;
-  }
-
-  public int getPlayerId() {
-    return playerId;
+    this.playerToken = token;
   }
 
   public String getPlayerToken() {
     return playerToken;
   }
-
-  public void setPlayerToken(String token) {
-    this.playerToken = token;
-  }
-
 
 
 }

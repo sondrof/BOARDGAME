@@ -21,7 +21,7 @@ public class PlayerLogic {
 
   public void printPlayerStatus() {
     for (Player player : playerList) {
-      System.out.println("Player " + player.getPlayerName() + " on tile " + player.getPlayerPos());
+      System.out.println("Player " + player.getPlayerName() + " on tile " + player.getPlayerPosition());
     }
   }
 
@@ -51,8 +51,8 @@ public class PlayerLogic {
     }
 
     int roll = diceSet.roll();
-    player.setPlayerPos(player.getPlayerPos() + roll);
-    System.out.println(player.getPlayerName() + " rolled " + roll + ", moved to position " + player.getPlayerPos());
+    player.setPlayerPosition(player.getPlayerPosition() + roll);
+    System.out.println(player.getPlayerName() + " rolled " + roll + ", moved to position " + player.getPlayerPosition());
   }
 
 
