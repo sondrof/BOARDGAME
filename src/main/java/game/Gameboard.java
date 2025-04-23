@@ -23,6 +23,13 @@ public class Gameboard {
         scanner = new Scanner(System.in);
     }
 
+    public Gameboard(TileLogic tileLogic) {
+        this.tileLogic = tileLogic;
+        this.playerLogic = new PlayerLogic(new DiceSet(2));
+        this.gameboardLogic = new GameboardLogic();
+        this.scanner = new Scanner(System.in);
+    }
+
     public void initBoard() {
         tileLogic.generateTiles(BOARD_SIZE);
 

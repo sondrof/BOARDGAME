@@ -16,6 +16,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>23.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.11.2</version>
@@ -33,5 +38,21 @@
             <version>2.10.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- JavaFX plugin -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <!-- Dette må være fullt kvalifisert navn til GUI-klassen din -->
+                    <mainClass>gui.BoardGameView</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>
