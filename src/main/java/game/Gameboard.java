@@ -115,4 +115,16 @@ public class Gameboard {
     public void closeScanner() {
         scanner.close();
     }
+
+    public PlayerLogic getPlayerLogic() {
+        return playerLogic;
+    }
+
+    public GameboardLogic getGameboardLogic() {
+        return gameboardLogic;
+    }
+
+    public TileLogic getTileLogic() {
+        return tileLogic;
+    }
 }

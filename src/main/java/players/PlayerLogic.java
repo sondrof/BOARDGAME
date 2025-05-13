@@ -96,4 +96,9 @@ public class PlayerLogic {
     player.setPlayerPosition(player.getPlayerPosition() + roll);
     System.out.println(player.getPlayerName() + " rolled " + roll + ", moved to position " + player.getPlayerPosition());
   }
+
+  //Legge til doc
+  public DiceSet getDiceSet() {
+    return diceSet;
+  }
 }
