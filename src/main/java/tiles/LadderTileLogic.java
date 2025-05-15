@@ -8,7 +8,6 @@ public class LadderTileLogic extends TileLogic {
     @Override
     public void generateBoard(int size) {
         tiles.clear();
-        // Generate basic tiles
         for (int i = 1; i <= size; i++) {
             tiles.add(new LadderTile(i, 0));
         }
