@@ -41,6 +41,17 @@ class TileTest {
     }
 
     @Test
+    void testMaximumTileNumber() {
+        TestTile tile = new TestTile(1000, 10);
+        assertEquals(1000, tile.getTileNumber());
+    }
+
+    @Test
+    void testExceedMaximumTileNumber() {
+        assertThrows(IllegalArgumentException.class, () -> new TestTile(1001, 10));
+    }
+
+    @Test
     void testGetEffect() {
         TestTile tile = new TestTile(5, 10);
         assertEquals(10, tile.getEffect());
