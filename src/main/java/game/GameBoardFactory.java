@@ -1,6 +1,7 @@
 package game;
 
 import com.google.gson.*;
+import tiles.LadderTileLogic;
 import tiles.TileLogic;
 
 import java.io.*;
@@ -15,8 +16,8 @@ public class GameBoardFactory {
 
 
     public static TileLogic createTileLogic(BoardType boardType, String fileName) {
-        TileLogic tileLogic = new TileLogic();
-        tileLogic.generateTiles(100);
+        LadderTileLogic tileLogic = new LadderTileLogic();
+        tileLogic.generateBoard(100);
 
         switch (boardType) {
             case STANDARD:
@@ -48,15 +49,15 @@ public class GameBoardFactory {
             JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
 
             int boardSize = boardJson.get("boardSize").getAsInt();
-            TileLogic tileLogic = new TileLogic();
-            tileLogic.generateTiles(boardSize);
+            LadderTileLogic tileLogic = new LadderTileLogic();
+            tileLogic.generateBoard(boardSize);
 
             JsonArray specialTilesArray = boardJson.getAsJsonArray("specialTiles");
             for (JsonElement tileElement : specialTilesArray) {
                 JsonObject tileJson = tileElement.getAsJsonObject();
                 int tileNumber = tileJson.get("tileNumber").getAsInt();
-                int specialValue = tileJson.get("specialValue").getAsInt();
-                tileLogic.setSpecialTile(tileNumber, specialValue);
+                int ladderValue = tileJson.get("ladderValue").getAsInt();
+                tileLogic.addLadder(tileNumber, ladderValue);
             }
 
             return tileLogic;
@@ -66,34 +67,34 @@ public class GameBoardFactory {
         }
     }
 
-    private static void setStandardTiles(TileLogic tileLogic) {
-        tileLogic.setSpecialTile(4, 10);
-        tileLogic.setSpecialTile(8, 22);
-        tileLogic.setSpecialTile(28, 48);
-        tileLogic.setSpecialTile(40, 36);
-        tileLogic.setSpecialTile(80, 19);
+    private static void setStandardTiles(LadderTileLogic tileLogic) {
+        tileLogic.addLadder(4, 10);
+        tileLogic.addLadder(8, 22);
+        tileLogic.addLadder(28, 48);
+        tileLogic.addLadder(40, 36);
+        tileLogic.addLadder(80, 19);
 
-        tileLogic.setSpecialTile(17, -10);
-        tileLogic.setSpecialTile(54, -20);
-        tileLogic.setSpecialTile(62, -43);
-        tileLogic.setSpecialTile(64, -4);
-        tileLogic.setSpecialTile(87, -63);
-        tileLogic.setSpecialTile(93, -20);
-        tileLogic.setSpecialTile(95, -20);
-        tileLogic.setSpecialTile(99, -21);
+        tileLogic.addLadder(17, -10);
+        tileLogic.addLadder(54, -20);
+        tileLogic.addLadder(62, -43);
+        tileLogic.addLadder(64, -4);
+        tileLogic.addLadder(87, -63);
+        tileLogic.addLadder(93, -20);
+        tileLogic.addLadder(95, -20);
+        tileLogic.addLadder(99, -21);
     }
 
-    private static void setStandardTiles2(TileLogic tileLogic) {
-        tileLogic.setSpecialTile(1, 19);
-        tileLogic.setSpecialTile(9, 7);
-        tileLogic.setSpecialTile(17, 10);
-        tileLogic.setSpecialTile(36, 40);
-        tileLogic.setSpecialTile(83, 15);
+    private static void setStandardTiles2(LadderTileLogic tileLogic) {
+        tileLogic.addLadder(1, 19);
+        tileLogic.addLadder(9, 7);
+        tileLogic.addLadder(17, 10);
+        tileLogic.addLadder(36, 40);
+        tileLogic.addLadder(83, 15);
 
-        tileLogic.setSpecialTile(12, -10);
-        tileLogic.setSpecialTile(15, -10);
-        tileLogic.setSpecialTile(40, -11);
-        tileLogic.setSpecialTile(54, -8);
-        tileLogic.setSpecialTile(86, -80);
+        tileLogic.addLadder(12, -10);
+        tileLogic.addLadder(15, -10);
+        tileLogic.addLadder(40, -11);
+        tileLogic.addLadder(54, -8);
+        tileLogic.addLadder(86, -80);
     }
 }

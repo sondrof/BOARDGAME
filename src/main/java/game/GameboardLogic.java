@@ -18,20 +18,20 @@ public class GameboardLogic {
         }
 
         Tile currentTile = tileLogic.getTileByNumber(currentPos);
-        if (currentTile != null && currentTile.getSpecialValue() != 0) {
+        if (currentTile != null && currentTile.getEffect() != 0) {
             movePlayerSpecial(player, currentTile);
         }
     }
 
     private void movePlayerSpecial(Player player, Tile tile) {
-        int newPos = player.getPlayerPosition() + tile.getSpecialValue();
+        int newPos = player.getPlayerPosition() + tile.getEffect();
         player.setPlayerPosition(newPos);
 
         String moveType;
-        if (tile.getSpecialValue() > 0) {
+        if (tile.getEffect() > 0) {
             moveType = "climbed a ladder to";
         } else {
-            moveType = "falled down a ladder to";
+            moveType = "fell down a ladder to";
         }
         System.out.println(player.getPlayerName() + " " + moveType + " " + newPos);
     }
@@ -43,6 +43,4 @@ public class GameboardLogic {
     public int getBoardSize() {
         return BOARD_SIZE;
     }
-
-
 }

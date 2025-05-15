@@ -1,68 +1,33 @@
 package tiles;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-public class TileLogic {
-  private int numberOfTiles = 0;
-  private ArrayList<Tile> tileList = new ArrayList<>();
+public abstract class TileLogic {
+  protected final List<Tile> tiles;
 
-  public void setNumberOfTiles(int numberOfTiles) {
-    if (numberOfTiles <= 0) {
-      throw new IllegalArgumentException("The number of tiles can't be 0 or negative");
-    }
-    this.numberOfTiles = numberOfTiles;
+  public TileLogic() {
+    this.tiles = new ArrayList<>();
   }
 
-  public int getNumberOfTiles() {
-    return numberOfTiles;
-  }
-
-  public void generateTiles(int numberOfTiles) {
-    tileList.clear(); // Clear the list to avoid duplicate tiles if method is called multiple times
-    for (int tilenumber = 1; tilenumber <= numberOfTiles; tilenumber++) {
-      Tile newTile = new Tile(tilenumber, 0);
-      addTile(newTile);
-    }
-  }
-
-  public void addTile(Tile newTile) {
-    tileList.add(newTile);
-  }
-
-  public void printTiles() {
-    for (Tile tile : tileList) {
-      System.out.println(tile.getTileNumber());
-    }
-  }
+  public abstract void generateBoard(int size);
 
   public Tile getTileByNumber(int number) {
-    for (Tile tile : tileList) {
-      if (tile.getTileNumber() == number) {
-        return tile;
-      }
-    }
-    return null;
+    return tiles.stream()
+            .filter(tile -> tile.getTileNumber() == number)
+            .findFirst()
+            .orElse(null);
   }
 
-  public void setSpecialTile(int tileNumber, int specialValue) {
-    Tile tile = getTileByNumber(tileNumber);
-    if (tile != null) {
-      tile.setSpecialValue(specialValue);
-      int destination = tileNumber + specialValue;
-      System.out.println("Added ladder from " + tileNumber + " to " + destination);
-    }
+  public void addTile(Tile tile) {
+    tiles.add(tile);
   }
 
-  public Map<Integer, Integer> getSpecialTilesMap() {
-    Map<Integer, Integer> specialTiles = new HashMap<>();
-    for (Tile tile : tileList) {
-      if (tile.getSpecialValue() != 0) {
-        specialTiles.put(tile.getTileNumber(), tile.getSpecialValue());
-      }
-    }
-    return specialTiles;
+  public int getBoardSize() {
+    return tiles.size();
   }
 
+  public List<Tile> getTiles() {
+    return new ArrayList<>(tiles);
+  }
 }

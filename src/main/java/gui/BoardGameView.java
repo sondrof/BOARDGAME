@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import players.Player;
+import tiles.LadderTileLogic;
 import tiles.TileLogic;
 
 import java.util.*;
@@ -144,7 +145,7 @@ public class BoardGameView extends Application {
     primaryStage.setTitle("Brettspill");
     primaryStage.show();
 
-    Platform.runLater(() -> drawArrows(gameboard.getTileLogic().getSpecialTilesMap()));
+    Platform.runLater(() -> drawArrows(((LadderTileLogic)gameboard.getTileLogic()).getLadderMap()));
     drawPlayers();
   }
 
