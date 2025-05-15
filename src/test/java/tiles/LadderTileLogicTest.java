@@ -26,7 +26,7 @@ class LadderTileLogicTest {
     @Test
     void testAddLadder() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(10);
+        logic.generateBoard(100);
 
         logic.addLadder(5, 10);
         Tile tile = logic.getTileByNumber(5);
@@ -64,5 +64,30 @@ class LadderTileLogicTest {
 
         Map<Integer, Integer> ladderMap = logic.getLadderMap();
         assertTrue(ladderMap.isEmpty());
+    }
+
+    @Test
+    void testAddLadderToTileWithExistingLadder() {
+        LadderTileLogic logic = new LadderTileLogic();
+        logic.generateBoard(100);
+
+        logic.addLadder(5, 10);
+        assertThrows(IllegalStateException.class, () -> logic.addLadder(5, 15));
+    }
+
+    @Test
+    void testAddLadderWithEffectBeyondBoard() {
+        LadderTileLogic logic = new LadderTileLogic();
+        logic.generateBoard(10);
+
+        assertThrows(IllegalArgumentException.class, () -> logic.addLadder(5, 10));
+    }
+
+    @Test
+    void testAddLadderWithLargeEffectValue() {
+        LadderTileLogic logic = new LadderTileLogic();
+        logic.generateBoard(100);
+
+        assertThrows(IllegalArgumentException.class, () -> logic.addLadder(5, Integer.MAX_VALUE));
     }
 }
