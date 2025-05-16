@@ -36,8 +36,21 @@ public class PlayerFileLoader {
      * @throws PlayerLoadException if an error occurs while reading from the file
      */
     public static List<Player> loadPlayers() throws PlayerLoadException {
+        return loadPlayers(PLAYER_FILE_PATH);
+    }
+
+    /**
+     * Loads players from a CSV file.
+     * Creates a new Player object for each valid line in the file.
+     * If the file doesn't exist, returns an empty list.
+     *
+     * @param filePath the path to the CSV file
+     * @return a list of players loaded from the file
+     * @throws PlayerLoadException if an error occurs while reading from the file
+     */
+    public static List<Player> loadPlayers(String filePath) throws PlayerLoadException {
         List<Player> players = new ArrayList<>();
-        File file = new File(PLAYER_FILE_PATH);
+        File file = new File(filePath);
 
         if (!file.exists()) {
             return players;
@@ -48,11 +61,10 @@ public class PlayerFileLoader {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
 
-
                 if (parts.length == 3) {
                     String name = parts[0];
                     String token = parts[1];
-                    int position = Integer.parseInt(parts[2]);
+                    int position = Integer.parseInt(parts[2].trim());
 
                     Player player = new Player(name, token);
                     player.setPlayerPosition(position);

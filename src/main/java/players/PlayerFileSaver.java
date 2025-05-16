@@ -34,7 +34,19 @@ public class PlayerFileSaver {
      * @throws PlayerSaveException if an error occurs while writing to the file
      */
     public static void savePlayers(List<Player> players) throws PlayerSaveException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(PLAYER_FILE_PATH))) {
+        savePlayers(players, PLAYER_FILE_PATH);
+    }
+
+    /**
+     * Saves a list of players to a CSV file.
+     * Each player's name, token, and position are written as a comma-separated line.
+     *
+     * @param players the list of players to save
+     * @param filePath the path to the CSV file where player data is stored
+     * @throws PlayerSaveException if an error occurs while writing to the file
+     */
+    public static void savePlayers(List<Player> players, String filePath) throws PlayerSaveException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             for (Player player : players) {
                 writer.println(player.getPlayerName() + "," + player.getPlayerToken() + "," + player.getPlayerPosition());
             }
