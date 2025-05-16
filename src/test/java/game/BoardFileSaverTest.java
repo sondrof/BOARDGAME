@@ -6,9 +6,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import tiles.LadderTileLogic;
 
+/**
+ * Unit tests for BoardFileSaver.
+ */
 class BoardFileSaverTest {
     private static final String TEST_SAVE_PATH = "src/test/resources/saved_board.json";
 
+    /**
+     * Tests saving a board configuration to a JSON file using BoardFileSaver.
+     */
     @Test
     void testSaveBoard() throws Exception {
         GameboardLogic gameboardLogic = new GameboardLogic();

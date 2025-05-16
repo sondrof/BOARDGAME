@@ -4,9 +4,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Map;
 
+/**
+ * Unit tests for BoardFileLoader.
+ */
 class BoardFileLoaderTest {
     private static final String TEST_BOARD_PATH = "src/test/resources/test_board.json";
 
+    /**
+     * Tests loading a board configuration from a JSON file using BoardFileLoader.
+     */
     @Test
     void testLoadBoard() throws Exception {
         BoardConfig config = BoardFileLoader.loadBoard(TEST_BOARD_PATH);
