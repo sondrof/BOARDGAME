@@ -1,0 +1,13 @@
+{
+  "boardSize": 10,
+  "specialTiles": [
+    {
+      "tileNumber": 3,
+      "ladderValue": 7
+    },
+    {
+      "tileNumber": 8,
+      "ladderValue": -6
+    }
+  ]
+}
