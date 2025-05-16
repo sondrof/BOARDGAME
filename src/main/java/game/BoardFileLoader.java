@@ -12,14 +12,50 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles loading board configurations from JSON files.
+ * This class provides methods to load board information from previous game sessions.
+ *
+ * <p>Board data is loaded from a JSON format containing:
+ * <ul>
+ *     <li>Board size: The total number of tiles on the board</li>
+ *     <li>Special tiles: An array of tile configurations, each containing a tile number and its ladder value</li>
+ * </ul>
+ *
+ * <p>The file is stored at a predefined location in the resources' directory.
+ *
+ * <p>Example usage:
+ * <pre>
+ * // Load board configuration
+ * BoardConfig config = BoardFileLoader.loadBoard();
+ * int boardSize = config.getBoardSize();
+ * Map<Integer, Integer> specialTiles = config.getTileConfigs();
+ * </pre>
+ */
 public class BoardFileLoader {
+    /** The path to the JSON file where board data is stored */
     private static final String DEFAULT_BOARD_FILE_PATH = "src/main/resources/board.json";
 
-    public static BoardFileHandler.BoardConfig loadBoard() throws BoardLoadException {
+    /**
+     * Loads a board configuration from the default JSON file.
+     * Creates a new BoardConfig object with the board size and special tile configurations.
+     *
+     * @return a BoardConfig object containing the loaded board configuration
+     * @throws BoardLoadException if an error occurs while reading from the file
+     */
+    public static BoardConfig loadBoard() throws BoardLoadException {
         return loadBoard(DEFAULT_BOARD_FILE_PATH);
     }
 
-    public static BoardFileHandler.BoardConfig loadBoard(String filePath) throws BoardLoadException {
+    /**
+     * Loads a board configuration from a specified JSON file.
+     * Creates a new BoardConfig object with the board size and special tile configurations.
+     *
+     * @param filePath the path to the JSON file containing the board configuration
+     * @return a BoardConfig object containing the loaded board configuration
+     * @throws BoardLoadException if an error occurs while reading from the file
+     */
+    public static BoardConfig loadBoard(String filePath) throws BoardLoadException {
         File file = new File(filePath);
 
         if (!file.exists()) {
@@ -41,7 +77,14 @@ public class BoardFileLoader {
         }
     }
 
-    private static BoardFileHandler.BoardConfig deserializeBoardConfig(String jsonString) {
+    /**
+     * Deserializes a JSON string into a BoardConfig object.
+     * Parses the board size and special tile configurations from the JSON string.
+     *
+     * @param jsonString the JSON string containing the board configuration
+     * @return a BoardConfig object containing the parsed board configuration
+     */
+    private static BoardConfig deserializeBoardConfig(String jsonString) {
         JsonObject boardJson = JsonParser.parseString(jsonString).getAsJsonObject();
 
         int boardSize = boardJson.get("boardSize").getAsInt();
@@ -56,7 +99,7 @@ public class BoardFileLoader {
             specialTiles.put(tileNumber, ladderValue);
         }
 
-        BoardFileHandler.BoardConfig config = new BoardFileHandler.BoardConfig();
+        BoardConfig config = new BoardConfig();
         config.setBoardSize(boardSize);
         config.setTileConfigs(specialTiles);
         return config;
