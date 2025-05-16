@@ -17,7 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import players.Player;
+import tiles.LadderTileLogic;
 import tiles.TileLogic;
+import tiles.LadderTileLogic;
 
 import java.util.*;
 
@@ -61,7 +63,8 @@ public class BoardGameView extends Application {
   }
 
   private void launchGame(BoardType boardType, String fileName) {
-    TileLogic tileLogic = GameBoardFactory.createTileLogic(boardType, fileName);
+    GameBoardFactory factory = new GameBoardFactory();
+    TileLogic tileLogic = factory.createBoard(boardType, fileName);
     gameboard = new Gameboard(tileLogic);
 
     gameboard.getPlayerLogic().addPlayer("Spiller 1");
@@ -144,7 +147,7 @@ public class BoardGameView extends Application {
     primaryStage.setTitle("Brettspill");
     primaryStage.show();
 
-    Platform.runLater(() -> drawArrows(gameboard.getTileLogic().getSpecialTilesMap()));
+    Platform.runLater(() -> drawArrows(((LadderTileLogic)gameboard.getTileLogic()).getLadderMap()));
     drawPlayers();
   }
 

@@ -3,6 +3,7 @@ package game;
 import dice.DiceSet;
 import players.Player;
 import players.PlayerLogic;
+import tiles.LadderTileLogic;
 import tiles.TileLogic;
 
 import java.util.InputMismatchException;
@@ -10,7 +11,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Gameboard {
-    private TileLogic tileLogic = new TileLogic();
+    private final GameBoardFactory factory;
+    private LadderTileLogic tileLogic;
     private PlayerLogic playerLogic;
     private GameboardLogic gameboardLogic;
     private static final int BOARD_SIZE = 100;
@@ -18,26 +20,28 @@ public class Gameboard {
     private Scanner scanner;
 
     public Gameboard() {
+        this.factory = new GameBoardFactory();
+        this.tileLogic = factory.createBoard(GameBoardFactory.BoardType.STANDARD, null);
         playerLogic = new PlayerLogic(new DiceSet(2));
         gameboardLogic = new GameboardLogic();
         scanner = new Scanner(System.in);
     }
 
     public Gameboard(TileLogic tileLogic) {
-        this.tileLogic = tileLogic;
+        if (!(tileLogic instanceof LadderTileLogic)) {
+            throw new IllegalArgumentException("Gameboard requires LadderTileLogic");
+        }
+        this.factory = new GameBoardFactory();
+        this.tileLogic = (LadderTileLogic) tileLogic;
         this.playerLogic = new PlayerLogic(new DiceSet(2));
         this.gameboardLogic = new GameboardLogic();
         this.scanner = new Scanner(System.in);
     }
 
     public void initBoard() {
-        tileLogic.generateTiles(BOARD_SIZE);
-
-
         setUpLadders();
 
         int numberOfPlayers = getValidPlayerCount();
-
 
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("Enter name for player " + (i + 1) + ": ");
@@ -68,8 +72,8 @@ public class Gameboard {
         }
     }
 
-    private void setUpLadders(){
-        Map<Integer, Integer>  upLadders = Map.of(
+    private void setUpLadders() {
+        Map<Integer, Integer> upLadders = Map.of(
                 4, 10,
                 8, 22,
                 28, 48,
@@ -88,8 +92,8 @@ public class Gameboard {
                 99, -21
         );
 
-        upLadders.forEach(tileLogic::setSpecialTile);
-        downLadders.forEach(tileLogic::setSpecialTile);
+        upLadders.forEach(tileLogic::addLadder);
+        downLadders.forEach(tileLogic::addLadder);
     }
 
     public void playRound() {
@@ -100,7 +104,6 @@ public class Gameboard {
             playerLogic.movePlayer(i);
 
             gameboardLogic.handlePlayerLanding(player, tileLogic);
-
 
             if (gameboardLogic.checkWinCondition(player)) {
                 System.out.println(player.getPlayerName() + " has won the game!");
@@ -124,7 +127,7 @@ public class Gameboard {
         return gameboardLogic;
     }
 
-    public TileLogic getTileLogic() {
+    public LadderTileLogic getTileLogic() {
         return tileLogic;
     }
 }
