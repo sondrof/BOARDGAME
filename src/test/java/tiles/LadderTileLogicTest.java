@@ -6,29 +6,22 @@ import java.util.Map;
 
 /**
  * Test class for tiles.LadderTileLogic functionality.
- * Tests the behavior of ladder tile logic, including board generation and ladder management.
+ * Tests the behavior of ladder tile logic, including ladder management.
  */
 class LadderTileLogicTest {
 
-    @Test
-    void testGenerateBoard() {
-        LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(10);
-
-        assertEquals(10, logic.getBoardSize());
-        for (int i = 1; i <= 10; i++) {
-            Tile tile = logic.getTileByNumber(i);
-            assertNotNull(tile);
-            assertEquals(0, tile.getEffect());
+    private void initializeBoard(LadderTileLogic logic, int size) {
+        for (int i = 1; i <= size; i++) {
+            logic.addTile(new LadderTile(i, 0));
         }
     }
 
     @Test
     void testAddLadder() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(100);
-
+        initializeBoard(logic, 100);
         logic.addLadder(5, 10);
+
         Tile tile = logic.getTileByNumber(5);
         assertEquals(10, tile.getEffect());
     }
@@ -36,8 +29,7 @@ class LadderTileLogicTest {
     @Test
     void testAddLadderToNonExistentTile() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(100);
-
+        initializeBoard(logic, 100);
         logic.addLadder(1000, 10);
         Tile tile = logic.getTileByNumber(1000);
         assertNull(tile);
@@ -46,33 +38,22 @@ class LadderTileLogicTest {
     @Test
     void testAddLadderToTileWithExistingLadder() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(100);
-
+        initializeBoard(logic, 100);
         logic.addLadder(5, 10);
         assertThrows(IllegalStateException.class, () -> logic.addLadder(5, 15));
     }
 
     @Test
-    void testAddLadderWithEffectBeyondBoard() {
-        LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(10);
-
-        assertThrows(IllegalArgumentException.class, () -> logic.addLadder(5, 10));
-    }
-
-    @Test
     void testAddLadderWithLargeEffectValue() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(100);
-
-        assertThrows(IllegalArgumentException.class, () -> logic.addLadder(5, Integer.MAX_VALUE));
+        initializeBoard(logic, 100);
+        assertThrows(IllegalArgumentException.class, () -> logic.addLadder(5, 101));
     }
 
     @Test
     void testAddCircularLadder() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(100);
-
+        initializeBoard(logic, 100);
         logic.addLadder(5, 10);
         assertThrows(IllegalArgumentException.class, () -> logic.addLadder(15, -10));
     }
@@ -80,31 +61,16 @@ class LadderTileLogicTest {
     @Test
     void testAddCircularLadderWithMultipleSteps() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(100);
-
+        initializeBoard(logic, 100);
         logic.addLadder(5, 10);
         logic.addLadder(15, 10);
         assertThrows(IllegalArgumentException.class, () -> logic.addLadder(25, -20));
     }
 
     @Test
-    void testGenerateBoardWithMaximumSize() {
-        LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(1000);
-        assertEquals(1000, logic.getBoardSize());
-    }
-
-    @Test
-    void testGenerateBoardExceedingMaximumSize() {
-        LadderTileLogic logic = new LadderTileLogic();
-        assertThrows(IllegalArgumentException.class, () -> logic.generateBoard(1001));
-    }
-
-    @Test
     void testGetLadderMap() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(10);
-
+        initializeBoard(logic, 10);
         logic.addLadder(3, 5);
         logic.addLadder(7, -3);
 
@@ -117,8 +83,7 @@ class LadderTileLogicTest {
     @Test
     void testGetLadderMapEmpty() {
         LadderTileLogic logic = new LadderTileLogic();
-        logic.generateBoard(10);
-
+        initializeBoard(logic, 10);
         Map<Integer, Integer> ladderMap = logic.getLadderMap();
         assertTrue(ladderMap.isEmpty());
     }

@@ -4,23 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TileLogic {
-  protected final List<Tile> tiles;
+  protected List<Tile> tiles;
 
-  public TileLogic() {
+  protected TileLogic() {
     this.tiles = new ArrayList<>();
   }
 
-  public abstract void generateBoard(int size);
-
-  public Tile getTileByNumber(int number) {
+  public Tile getTileByNumber(int tileNumber) {
     return tiles.stream()
-            .filter(tile -> tile.getTileNumber() == number)
+            .filter(tile -> tile.getTileNumber() == tileNumber)
             .findFirst()
             .orElse(null);
   }
 
   public void addTile(Tile tile) {
-    tiles.add(tile);
+    int index = tiles.indexOf(getTileByNumber(tile.getTileNumber()));
+    if (index != -1) {
+      tiles.set(index, tile);
+    } else {
+      tiles.add(tile);
+    }
   }
 
   public int getBoardSize() {

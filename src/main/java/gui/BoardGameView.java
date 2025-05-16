@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import players.Player;
 import tiles.LadderTileLogic;
 import tiles.TileLogic;
+import tiles.LadderTileLogic;
 
 import java.util.*;
 
@@ -62,7 +63,8 @@ public class BoardGameView extends Application {
   }
 
   private void launchGame(BoardType boardType, String fileName) {
-    TileLogic tileLogic = GameBoardFactory.createTileLogic(boardType, fileName);
+    GameBoardFactory factory = new GameBoardFactory();
+    TileLogic tileLogic = factory.createBoard(boardType, fileName);
     gameboard = new Gameboard(tileLogic);
 
     gameboard.getPlayerLogic().addPlayer("Spiller 1");

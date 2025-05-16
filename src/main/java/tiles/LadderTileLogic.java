@@ -8,20 +8,6 @@ public class LadderTileLogic extends TileLogic {
     private static final int MAX_EFFECT = 100;
     private static final int MAX_BOARD_SIZE = 1000;
 
-    @Override
-    public void generateBoard(int size) {
-        if (size <= 0) {
-            throw new IllegalArgumentException("Board size must be positive, got: " + size);
-        }
-        if (size > MAX_BOARD_SIZE) {
-            throw new IllegalArgumentException("Board size exceeds maximum allowed value of " + MAX_BOARD_SIZE);
-        }
-        tiles.clear();
-        for (int i = 1; i <= size; i++) {
-            tiles.add(new LadderTile(i, 0));
-        }
-    }
-
     public void addLadder(int fromTile, int ladderValue) {
         Tile tile = getTileByNumber(fromTile);
         if (tile == null) {
