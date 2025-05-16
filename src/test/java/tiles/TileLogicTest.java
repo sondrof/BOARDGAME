@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
 /**
- * Test class for tiles.TileLogic functionality.
- * Tests the base functionality of the abstract TileLogic class using a test implementation.
+ * Test class for TileLogic functionality.
+ * Tests basic tile operations, board management, and tile retrieval.
  */
 class TileLogicTest {
 
@@ -33,6 +33,9 @@ class TileLogicTest {
         }
     }
 
+    /**
+     * Tests retrieving a tile by its number when it exists on the board.
+     */
     @Test
     void testGetTileByNumber() {
         TestTileLogic logic = new TestTileLogic();
@@ -43,6 +46,9 @@ class TileLogicTest {
         assertEquals(5, tile.getTileNumber());
     }
 
+    /**
+     * Tests retrieving a tile by its number when it doesn't exist on the board.
+     */
     @Test
     void testGetTileByNumberNotFound() {
         TestTileLogic logic = new TestTileLogic();
@@ -52,10 +58,13 @@ class TileLogicTest {
         assertNull(tile);
     }
 
+    /**
+     * Tests adding a new tile to an empty board.
+     */
     @Test
     void testAddTile() {
         TestTileLogic logic = new TestTileLogic();
-        Tile newTile = new TestTile(11, 5);
+        TestTile newTile = new TestTile(11, 5);
         logic.addTile(newTile);
 
         assertEquals(1, logic.getBoardSize());
@@ -64,6 +73,9 @@ class TileLogicTest {
         assertEquals(5, addedTile.getEffect());
     }
 
+    /**
+     * Tests getting the total number of tiles on the board.
+     */
     @Test
     void testGetBoardSize() {
         TestTileLogic logic = new TestTileLogic();
@@ -73,6 +85,9 @@ class TileLogicTest {
         assertEquals(2, logic.getBoardSize());
     }
 
+    /**
+     * Tests retrieving all tiles from the board.
+     */
     @Test
     void testGetTiles() {
         TestTileLogic logic = new TestTileLogic();
@@ -85,6 +100,9 @@ class TileLogicTest {
         assertEquals(2, tiles.get(1).getTileNumber());
     }
 
+    /**
+     * Tests replacing an existing tile with a new one.
+     */
     @Test
     void testReplaceExistingTile() {
         TestTileLogic logic = new TestTileLogic();
@@ -98,6 +116,9 @@ class TileLogicTest {
         assertEquals(10, replacedTile.getEffect());
     }
 
+    /**
+     * Tests that the order of tiles is maintained when retrieving them.
+     */
     @Test
     void testGetTilesMaintainsOrder() {
         TestTileLogic logic = new TestTileLogic();

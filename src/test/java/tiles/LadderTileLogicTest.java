@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Map;
 
 /**
- * Test class for tiles.LadderTileLogic functionality.
- * Tests the behavior of ladder tile logic, including ladder management.
+ * Test class for LadderTileLogic functionality.
+ * Tests ladder management, validation, and board operations.
  */
 class LadderTileLogicTest {
 
@@ -16,6 +16,9 @@ class LadderTileLogicTest {
         }
     }
 
+    /**
+     * Tests adding a ladder to a valid tile position.
+     */
     @Test
     void testAddLadder() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -26,6 +29,9 @@ class LadderTileLogicTest {
         assertEquals(10, tile.getEffect());
     }
 
+    /**
+     * Tests adding a ladder to a non-existent tile position.
+     */
     @Test
     void testAddLadderToNonExistentTile() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -35,6 +41,9 @@ class LadderTileLogicTest {
         assertNull(tile);
     }
 
+    /**
+     * Tests adding a ladder to a tile that already has one.
+     */
     @Test
     void testAddLadderToTileWithExistingLadder() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -43,6 +52,9 @@ class LadderTileLogicTest {
         assertThrows(IllegalStateException.class, () -> logic.addLadder(5, 15));
     }
 
+    /**
+     * Tests adding a ladder with an effect value exceeding the maximum allowed.
+     */
     @Test
     void testAddLadderWithLargeEffectValue() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -50,6 +62,9 @@ class LadderTileLogicTest {
         assertThrows(IllegalArgumentException.class, () -> logic.addLadder(5, 101));
     }
 
+    /**
+     * Tests adding a ladder that would create a circular path.
+     */
     @Test
     void testAddCircularLadder() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -58,6 +73,9 @@ class LadderTileLogicTest {
         assertThrows(IllegalArgumentException.class, () -> logic.addLadder(15, -10));
     }
 
+    /**
+     * Tests adding a ladder that would create a circular path through multiple steps.
+     */
     @Test
     void testAddCircularLadderWithMultipleSteps() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -67,6 +85,9 @@ class LadderTileLogicTest {
         assertThrows(IllegalArgumentException.class, () -> logic.addLadder(25, -20));
     }
 
+    /**
+     * Tests retrieving the map of all ladders on the board.
+     */
     @Test
     void testGetLadderMap() {
         LadderTileLogic logic = new LadderTileLogic();
@@ -80,6 +101,9 @@ class LadderTileLogicTest {
         assertEquals(-3, ladderMap.get(7));
     }
 
+    /**
+     * Tests retrieving the ladder map when no ladders exist.
+     */
     @Test
     void testGetLadderMapEmpty() {
         LadderTileLogic logic = new LadderTileLogic();
