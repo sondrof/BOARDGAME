@@ -1,5 +1,7 @@
 package game;
 
+import modell.gameboard.BoardConfig;
+import modell.gameboard.BoardFileLoader;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Map;

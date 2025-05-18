@@ -1,0 +1,8 @@
+SCENES use their constructor from Abstract class ->
+With RelativeSceneController passed as parameter (SceneManager manager) v (LadderGameController controller) ->
+super("startMenu", buildScene(manager)); etc
+
+Blir enda enklere å bygge på scenene og displaye ting riktig etter UIElementsController er på plass
+så vi kan gjøre Controllers mye enklere
+
+

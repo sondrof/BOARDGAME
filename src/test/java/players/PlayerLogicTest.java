@@ -1,6 +1,8 @@
 package players;
 
-import dice.DiceSet;
+import modell.dice.DiceSet;
+import modell.players.Player;
+import modell.players.PlayerLogic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,0 +1,9 @@
+1: Vi må lage uirender og uielementcontroller asap så vi kan lage controllers og scenes finere/lettere/raskere
+
+2: Lage en ny sene for å hondtere spill valg (andre spillet + stige spillet, kanskje player skin selct når player rednerer
+kommer på plass)
+-som dropdown meny. Kan fylle in gameinfo for hvordan spillet skal inite
+
+3: Ekstra logikk i klasser for nye spillet må finne ut av hva ASAP
+
+4: En resource handler som UIElements kan bruke for å oppdatere grafikk

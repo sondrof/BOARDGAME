@@ -1,10 +1,13 @@
 package game;
 
+import modell.gameboard.BoardFileSaver;
+import modell.gameboard.GameboardLogic;
+import modell.tiles.LadderTile;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import tiles.LadderTileLogic;
+import modell.tiles.LadderTileLogic;
 
 /**
  * Unit tests for BoardFileSaver.
@@ -21,7 +24,7 @@ class BoardFileSaverTest {
         LadderTileLogic tileLogic = new LadderTileLogic();
 
         for (int i = 1; i <= gameboardLogic.getBoardSize(); i++) {
-            tileLogic.addTile(new tiles.LadderTile(i, 0));
+            tileLogic.addTile(new LadderTile(i, 0));
         }
 
         tileLogic.addLadder(3, 7);

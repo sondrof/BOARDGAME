@@ -48,7 +48,7 @@
                 <version>0.0.8</version>
                 <configuration>
                     <!-- Dette må være fullt kvalifisert navn til GUI-klassen din -->
-                    <mainClass>gui.BoardGameView</mainClass>
+                    <mainClass>view.BoardGameView</mainClass>
                 </configuration>
             </plugin>
         </plugins>
