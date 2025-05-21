@@ -17,6 +17,7 @@ public class BoardGameView extends Application {
         primaryStage.setTitle("Board Game");
         primaryStage.setWidth(1000);
         primaryStage.setHeight(750);
+        primaryStage.setResizable(false);
 
         // Register the start menu scene
         sceneManager.registerScene("startMenu", new StartMenuSceneView(sceneManager));
