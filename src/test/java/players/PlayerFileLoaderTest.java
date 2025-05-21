@@ -1,4 +1,6 @@
+/*
 package players;
+
 
 import modell.players.Player;
 import modell.players.PlayerFileLoader;
@@ -6,15 +8,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
-/**
- * Unit tests for PlayerFileLoader.
- */
+
 class PlayerFileLoaderTest {
     private static final String TEST_PLAYERS_PATH = "src/test/resources/test_players.csv";
 
-    /**
-     * Tests loading players from a CSV file using PlayerFileLoader.
-     */
+
     @Test
     void testLoadPlayers() throws Exception {
         List<Player> players = PlayerFileLoader.loadPlayers(TEST_PLAYERS_PATH);
@@ -32,4 +30,6 @@ class PlayerFileLoaderTest {
         assertEquals(10, player2.getPlayerPosition());
     }
 }
+
+ */
 

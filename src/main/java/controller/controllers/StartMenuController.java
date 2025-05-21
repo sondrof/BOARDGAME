@@ -1,23 +1,18 @@
 package controller.controllers;
 
 import controller.SceneManager;
-import modell.gameboard.GameBoardFactory.BoardType;
-import view.scenes.LadderGameSceneView;
+import view.scenes.GameSetupSceneView;
 
 public class StartMenuController {
-  private final SceneManager manager;
+  private final SceneManager sceneManager;
 
-  public StartMenuController(SceneManager manager) {
-    this.manager = manager;
+  public StartMenuController(SceneManager sceneManager) {
+    this.sceneManager = sceneManager;
   }
 
-  public void launchGame(BoardType type, String filename) {
-    LadderGameController gameController = new LadderGameController(manager);
-    LadderGameSceneView gameScene = new LadderGameSceneView(gameController);
-    manager.registerScene("ladderGame", gameScene);
-    gameController.launchGame(type, filename);
-    manager.switchTo("ladderGame");
+  public void launchGameSetup(String gameType) {
+    GameSetupSceneView setupScene = new GameSetupSceneView(sceneManager, gameType);
+    sceneManager.registerScene("gameSetup", setupScene);
+    sceneManager.switchTo("gameSetup");
   }
-
-
 }

@@ -48,7 +48,7 @@ public class PlayerFileSaver {
     public static void savePlayers(List<Player> players, String filePath) throws PlayerSaveException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             for (Player player : players) {
-                writer.println(player.getPlayerName() + "," + player.getPlayerToken() + "," + player.getPlayerPosition());
+                writer.println(player.getName() + "," + player.getToken().name() + "," + player.getPlayerPosition());
             }
         } catch (IOException e) {
             throw new PlayerSaveException("Failed to save players to CSV", e);

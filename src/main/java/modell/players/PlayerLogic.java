@@ -45,7 +45,7 @@ public class PlayerLogic {
    * @param name the name of the player to add
    */
   public void addPlayer(String name) {
-    playerList.add(new Player(name,"DefaultToken"));
+    playerList.add(new Player(name, PlayerToken.DEFAULT));
   }
 
   /**
@@ -54,7 +54,7 @@ public class PlayerLogic {
    */
   public void printPlayerStatus() {
     for (Player player : playerList) {
-      System.out.println("Player " + player.getPlayerName() + " on tile " + player.getPlayerPosition());
+      System.out.println("Player " + player.getName() + " on tile " + player.getPlayerPosition());
     }
   }
 
@@ -66,7 +66,7 @@ public class PlayerLogic {
    */
   public void generatePlayers(int amountOfPlayers) {
     for (int i = 0; i < amountOfPlayers; i++) {
-      playerList.add(new Player("Player" + (i + 1), "DefaultToken"));
+      playerList.add(new Player("Player" + (i + 1), PlayerToken.DEFAULT));
     }
   }
 
@@ -94,10 +94,14 @@ public class PlayerLogic {
     Player player = playerList.get(playerIndex);
     int roll = diceSet.roll();
     player.setPlayerPosition(player.getPlayerPosition() + roll);
-    System.out.println(player.getPlayerName() + " rolled " + roll + ", moved to position " + player.getPlayerPosition());
+    System.out.println(player.getName() + " rolled " + roll + ", moved to position " + player.getPlayerPosition());
   }
 
-  //Legge til doc
+  /**
+   * Returns the dice set used for player movements.
+   *
+   * @return the dice set
+   */
   public DiceSet getDiceSet() {
     return diceSet;
   }

@@ -51,7 +51,7 @@ public class Gameboard {
 
         System.out.println("The following players are playing the game:");
         for (Player player : playerLogic.getPlayerList()) {
-            System.out.println("Name: " + player.getPlayerName());
+            System.out.println("Name: " + player.getName());
         }
     }
 
@@ -106,7 +106,7 @@ public class Gameboard {
             gameboardLogic.handlePlayerLanding(player, tileLogic);
 
             if (gameboardLogic.checkWinCondition(player)) {
-                System.out.println(player.getPlayerName() + " has won the game!");
+                System.out.println(player.getName() + " has won the game!");
                 System.exit(0);
             }
         }

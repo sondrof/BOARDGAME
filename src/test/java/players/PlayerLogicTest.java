@@ -3,6 +3,7 @@ package players;
 import modell.dice.DiceSet;
 import modell.players.Player;
 import modell.players.PlayerLogic;
+import modell.players.PlayerToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +35,8 @@ class PlayerLogicTest {
         playerLogic.addPlayer("Ronaldo");
         ArrayList<Player> players = playerLogic.getPlayerList();
         assertEquals(1, players.size());
-        assertEquals("Ronaldo", players.get(0).getPlayerName());
-        assertEquals("DefaultToken", players.get(0).getPlayerToken());
+        assertEquals("Ronaldo", players.get(0).getName());
+        assertEquals(PlayerToken.DEFAULT, players.get(0).getToken());
         assertEquals(0, players.get(0).getPlayerPosition());
     }
 
@@ -48,22 +49,22 @@ class PlayerLogicTest {
         playerLogic.addPlayer("Messi");
         playerLogic.addPlayer("Neymar");
         ArrayList<Player> players = playerLogic.getPlayerList();
-        assertEquals("Ronaldo", players.get(0).getPlayerName());
-        assertEquals("Messi", players.get(1).getPlayerName());
-        assertEquals("Neymar", players.get(2).getPlayerName());
+        assertEquals("Ronaldo", players.get(0).getName());
+        assertEquals("Messi", players.get(1).getName());
+        assertEquals("Neymar", players.get(2).getName());
     }
 
     /**
      * Tests generating multiple players with default names.
      */
     @Test
-    void testGeneratePlayers(){
+    void testGeneratePlayers() {
         playerLogic.generatePlayers(3);
         ArrayList<Player> players = playerLogic.getPlayerList();
         assertEquals(3, players.size());
-        assertEquals("Player1", players.get(0).getPlayerName());
-        assertEquals("Player2", players.get(1).getPlayerName());
-        assertEquals("Player3", players.get(2).getPlayerName());
+        assertEquals("Player1", players.get(0).getName());
+        assertEquals("Player2", players.get(1).getName());
+        assertEquals("Player3", players.get(2).getName());
     }
 
     /**
