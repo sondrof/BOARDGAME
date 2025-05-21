@@ -18,9 +18,9 @@ package modell.players;
  */
 public class Player {
   /** The name of the player */
-  private String playerName;
+  private final String name;
   /** The token representing the player on the board */
-  private String playerToken;
+  private final PlayerToken token;
   /** The current position of the player on the board */
   private int playerPosition;
 
@@ -28,28 +28,20 @@ public class Player {
    * Constructs a new player with the specified name and token.
    * The initial position is set to 0 (starting position).
    *
-   * @param playerName the name of the player
-   * @param playerToken the token representing the player
-   * @throws IllegalArgumentException if playerName or playerToken is null or blank
+   * @param name the name of the player
+   * @param token the token representing the player
+   * @throws IllegalArgumentException if name or token is null or blank
    */
-  public Player(String playerName, String playerToken) {
-    setPlayerName(playerName);
-    setPlayerToken(playerToken);
-    this.playerPosition = 0;
-  }
-
-  /**
-   * Sets the player's name.
-   * The name is used to identify the player during the game.
-   *
-   * @param playerName the name to set
-   * @throws IllegalArgumentException if playerName is null or blank
-   */
-  public void setPlayerName(String playerName) {
-    if (playerName == null || playerName.isBlank()) {
-      throw new IllegalArgumentException("Player cannot be blank");
+  public Player(String name, PlayerToken token) {
+    if (name == null || name.isBlank()) {
+      throw new IllegalArgumentException("Player name cannot be blank");
     }
-    this.playerName = playerName;
+    if (token == null) {
+      throw new IllegalArgumentException("Player token cannot be null");
+    }
+    this.name = name;
+    this.token = token;
+    this.playerPosition = 0;
   }
 
   /**
@@ -57,22 +49,8 @@ public class Player {
    *
    * @return the player's name
    */
-  public String getPlayerName() {
-    return playerName;
-  }
-
-  /**
-   * Sets the player's token.
-   * The token represents the player's piece on the game board.
-   *
-   * @param token the token to set
-   * @throws IllegalArgumentException if token is null or blank
-   */
-  public void setPlayerToken(String token) {
-    if (token == null || token.isBlank()) {
-      throw new IllegalArgumentException("Player token cannot be blank");
-    }
-    this.playerToken = token;
+  public String getName() {
+    return name;
   }
 
   /**
@@ -80,8 +58,8 @@ public class Player {
    *
    * @return the player's token
    */
-  public String getPlayerToken() {
-    return playerToken;
+  public PlayerToken getToken() {
+    return token;
   }
 
   /**
