@@ -3,8 +3,10 @@ package controller.controllers;
 import controller.SceneManager;
 import modell.exceptions.PlayerLoadException;
 import modell.players.Player;
+import modell.players.PlayerToken;
 import modell.players.PlayerFileLoader;
 import modell.setup.GameSetupModel;
+import modell.gameboard.GameBoardFactory;
 import view.scenes.GameSetupSceneView;
 import view.scenes.LadderGameSceneView;
 
@@ -24,9 +26,13 @@ public class GameSetupController {
         this.view = view;
     }
 
-    public void addPlayer(String name, String token) {
-        model.addPlayerSetup(name, token);
-        view.refreshPlayerList();
+    public void addPlayer(String name, PlayerToken token) {
+        try {
+            model.addPlayerSetup(name, token);
+            view.refreshPlayerList();
+        } catch (IllegalArgumentException e) {
+            view.showError("Invalid Player", e.getMessage());
+        }
     }
 
     public void removePlayer(int index) {
@@ -35,21 +41,40 @@ public class GameSetupController {
     }
 
     public void setGameMode(String gameMode) {
-        model.setGameMode(gameMode);
+        try {
+            model.setGameMode(gameMode);
+        } catch (IllegalArgumentException e) {
+            view.showError("Invalid Game Mode", e.getMessage());
+        }
     }
 
     public void startGame() {
-        List<Player> players = model.createPlayers();
-        if (players.isEmpty()) {
-            view.showError("No players added", "Please add at least one player to start the game.");
-            return;
-        }
+        try {
+            model.validateGameSetup();
+            List<Player> players = model.createPlayers();
 
-        String gameMode = model.getGameMode();
-        // TODO: Create appropriate game controller based on gameType and gameMode
-        LadderGameController gameController = new LadderGameController(sceneManager, players, gameMode);
-        sceneManager.registerScene("game", new LadderGameSceneView(gameController));
-        sceneManager.switchTo("game");
+            // Create appropriate game controller based on game type and mode
+            AbstractGameController gameController = GameControllerFactory.createGameController(
+                    model.getGameType(),
+                    sceneManager,
+                    players,
+                    model.getGameMode()
+            );
+
+            // Register and switch to the game scene
+            sceneManager.registerScene("game", new LadderGameSceneView(gameController));
+            sceneManager.switchTo("game");
+
+            // Launch the game with the selected board type
+            if (gameController instanceof LadderGameController ladderController) {
+                ladderController.launchGame(
+                        GameBoardFactory.BoardType.valueOf(model.getGameMode().toUpperCase()),
+                        null
+                );
+            }
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            view.showError("Cannot Start Game", e.getMessage());
+        }
     }
 
     public void loadGame() {
@@ -60,8 +85,14 @@ public class GameSetupController {
                 return;
             }
 
-            // TODO: Load game state and create appropriate game controller
-            LadderGameController gameController = new LadderGameController(sceneManager, players, "Standard");
+            // Create game controller with loaded players
+            AbstractGameController gameController = GameControllerFactory.createGameController(
+                    model.getGameType(),
+                    sceneManager,
+                    players,
+                    "Standard"
+            );
+
             sceneManager.registerScene("game", new LadderGameSceneView(gameController));
             sceneManager.switchTo("game");
         } catch (PlayerLoadException e) {

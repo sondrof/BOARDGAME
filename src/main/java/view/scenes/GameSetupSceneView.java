@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import modell.players.PlayerToken;
 import view.ui.ResourceLoader;
 import view.ui.UIFactory;
 
@@ -15,6 +16,7 @@ public class GameSetupSceneView extends AbstractScene {
     private final GameSetupController controller;
     private final VBox playerSetupBox;
     private final ComboBox<String> gameModeComboBox;
+    private final Label playerCountLabel;
 
     public GameSetupSceneView(SceneManager manager, String gameType) {
         super("gameSetup", buildScene(manager, gameType));
@@ -22,6 +24,7 @@ public class GameSetupSceneView extends AbstractScene {
         this.controller.setView(this);
         this.playerSetupBox = new VBox(10);
         this.gameModeComboBox = new ComboBox<>();
+        this.playerCountLabel = new Label("Players: 0/4");
 
         initializeUI();
     }
@@ -33,7 +36,7 @@ public class GameSetupSceneView extends AbstractScene {
 
         // Add background
         BackgroundImage bg = new BackgroundImage(
-                ResourceLoader.getBackground("setup_background.png"),
+                ResourceLoader.getBackground("start_background.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
@@ -50,10 +53,12 @@ public class GameSetupSceneView extends AbstractScene {
         // Title
         Label titleLabel = new Label("Game Setup");
         titleLabel.setFont(new Font("Arial", 24));
+        titleLabel.setTextFill(javafx.scene.paint.Color.WHITE);
 
         // Game Mode Selection
         HBox gameModeBox = new HBox(10);
         Label gameModeLabel = new Label("Game Mode:");
+        gameModeLabel.setTextFill(javafx.scene.paint.Color.WHITE);
         gameModeComboBox.getItems().addAll("Standard", "Fun Board 1", "Fun Board 2", "Fun Board 3");
         gameModeComboBox.setValue("Standard");
         gameModeComboBox.setOnAction(e -> controller.setGameMode(gameModeComboBox.getValue()));
@@ -63,12 +68,18 @@ public class GameSetupSceneView extends AbstractScene {
         // Player Setup Section
         Label playerSetupLabel = new Label("Player Setup");
         playerSetupLabel.setFont(new Font("Arial", 18));
+        playerSetupLabel.setTextFill(javafx.scene.paint.Color.WHITE);
+
+        // Player count label
+        playerCountLabel.setFont(new Font("Arial", 14));
+        playerCountLabel.setTextFill(javafx.scene.paint.Color.WHITE);
 
         // Add initial player setup fields
         addPlayerSetupFields();
 
         // Add Player Button
         Button addPlayerButton = UIFactory.button("Add Player", this::addPlayerSetupFields);
+        addPlayerButton.setDisable(true); // Will be enabled when player count is less than max
 
         // Action Buttons
         HBox actionButtons = new HBox(20);
@@ -84,6 +95,7 @@ public class GameSetupSceneView extends AbstractScene {
                 titleLabel,
                 gameModeBox,
                 playerSetupLabel,
+                playerCountLabel,
                 playerSetupBox,
                 addPlayerButton,
                 actionButtons
@@ -96,9 +108,33 @@ public class GameSetupSceneView extends AbstractScene {
 
         TextField nameField = new TextField();
         nameField.setPromptText("Player Name");
+        nameField.setMaxWidth(200);
 
-        TextField tokenField = new TextField();
-        tokenField.setPromptText("Player Token");
+        ComboBox<PlayerToken> tokenComboBox = new ComboBox<>();
+        tokenComboBox.getItems().addAll(PlayerToken.values());
+        tokenComboBox.setMaxWidth(150);
+        tokenComboBox.setButtonCell(new ListCell<PlayerToken>() {
+            @Override
+            protected void updateItem(PlayerToken item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Select Token");
+                } else {
+                    setText(item.toString());
+                }
+            }
+        });
+        tokenComboBox.setCellFactory(lv -> new ListCell<PlayerToken>() {
+            @Override
+            protected void updateItem(PlayerToken item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toString());
+                }
+            }
+        });
 
         Button removeButton = UIFactory.button("Remove", () -> {
             int index = playerSetupBox.getChildren().indexOf(playerBox);
@@ -107,18 +143,18 @@ public class GameSetupSceneView extends AbstractScene {
             }
         });
 
-        playerBox.getChildren().addAll(nameField, tokenField, removeButton);
+        playerBox.getChildren().addAll(nameField, tokenComboBox, removeButton);
         playerSetupBox.getChildren().add(playerBox);
 
         // Add the player when both fields are filled
         nameField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty() && !tokenField.getText().isEmpty()) {
-                controller.addPlayer(newVal, tokenField.getText());
+            if (!newVal.isEmpty() && tokenComboBox.getValue() != null) {
+                controller.addPlayer(newVal, tokenComboBox.getValue());
             }
         });
 
-        tokenField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty() && !nameField.getText().isEmpty()) {
+        tokenComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && !nameField.getText().isEmpty()) {
                 controller.addPlayer(nameField.getText(), newVal);
             }
         });
@@ -132,9 +168,34 @@ public class GameSetupSceneView extends AbstractScene {
 
             TextField nameField = new TextField(setup.getName());
             nameField.setPromptText("Player Name");
+            nameField.setMaxWidth(200);
 
-            TextField tokenField = new TextField(setup.getToken());
-            tokenField.setPromptText("Player Token");
+            ComboBox<PlayerToken> tokenComboBox = new ComboBox<>();
+            tokenComboBox.getItems().addAll(PlayerToken.values());
+            tokenComboBox.setValue(setup.getToken());
+            tokenComboBox.setMaxWidth(150);
+            tokenComboBox.setButtonCell(new ListCell<PlayerToken>() {
+                @Override
+                protected void updateItem(PlayerToken item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText("Select Token");
+                    } else {
+                        setText(item.toString());
+                    }
+                }
+            });
+            tokenComboBox.setCellFactory(lv -> new ListCell<PlayerToken>() {
+                @Override
+                protected void updateItem(PlayerToken item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.toString());
+                    }
+                }
+            });
 
             Button removeButton = UIFactory.button("Remove", () -> {
                 int index = playerSetupBox.getChildren().indexOf(playerBox);
@@ -143,9 +204,17 @@ public class GameSetupSceneView extends AbstractScene {
                 }
             });
 
-            playerBox.getChildren().addAll(nameField, tokenField, removeButton);
+            playerBox.getChildren().addAll(nameField, tokenComboBox, removeButton);
             playerSetupBox.getChildren().add(playerBox);
         }
+
+        // Update player count label
+        int playerCount = controller.getModel().getPlayerSetups().size();
+        playerCountLabel.setText("Players: " + playerCount + "/4");
+
+        // Enable/disable add player button based on player count
+        Button addButton = (Button) ((VBox) getScene().getRoot()).getChildren().get(5);
+        addButton.setDisable(playerCount >= 4);
     }
 
     public void showError(String title, String message) {

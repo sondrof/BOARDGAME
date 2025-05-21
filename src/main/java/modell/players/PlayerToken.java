@@ -1,6 +1,7 @@
 package modell.players;
 
 public enum PlayerToken {
+    DEFAULT("🎲", "Default"),
     CAR("🚗", "Car"),
     HAT("🎩", "Hat"),
     BOAT("⛵", "Boat"),
@@ -8,7 +9,9 @@ public enum PlayerToken {
     CAT("🐱", "Cat"),
     ROCKET("🚀", "Rocket"),
     CROWN("👑", "Crown"),
-    STAR("⭐", "Star");
+    STAR("⭐", "Star"),
+    SWORD("⚔️", "Sword"),
+    BANDANA("🎀", "Bandana");
 
     private final String emoji;
     private final String displayName;

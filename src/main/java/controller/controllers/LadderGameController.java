@@ -23,7 +23,7 @@ import view.ui.UIRenderer;
 
 import java.util.*;
 
-public class LadderGameController {
+public class LadderGameController extends AbstractGameController {
 
   private final SceneManager manager;
   private Gameboard gameboard;
@@ -41,9 +41,13 @@ public class LadderGameController {
 
   private StackPane startTile;
   private int currentPlayerIndex = 0;
+  private boolean gameStarted;
 
-  public LadderGameController(SceneManager manager) {
+  public LadderGameController(SceneManager manager, List<Player> players, String gameMode) {
+    super(manager, new ArrayList<>(players), gameMode);
     this.manager = manager;
+    this.currentPlayerIndex = 0;
+    this.gameStarted = false;
 
     rollDiceButton.setOnAction(e -> handleDiceRoll());
     rollDiceButton.setMaxWidth(Double.MAX_VALUE);
@@ -53,14 +57,86 @@ public class LadderGameController {
     logArea.setPrefHeight(150);
   }
 
+  @Override
+  public void startGame() {
+    if (gameStarted) {
+      throw new IllegalStateException("Game is already started");
+    }
+    if (players.size() < 2) {
+      throw new IllegalStateException("Need at least 2 players to start the game");
+    }
+    gameStarted = true;
+  }
+
+  @Override
+  public void endGame() {
+    if (!gameStarted) {
+      throw new IllegalStateException("Game has not been started");
+    }
+    gameStarted = false;
+  }
+
+  @Override
+  public void saveGame() {
+    if (!gameStarted) {
+      throw new IllegalStateException("No game in progress to save");
+    }
+    // TODO: Implement game saving logic
+  }
+
+  @Override
+  public void loadGame() {
+    if (gameStarted) {
+      throw new IllegalStateException("Cannot load game while another game is in progress");
+    }
+    // TODO: Implement game loading logic
+  }
+
+  @Override
+  public void movePlayer(Player player, int steps) {
+    if (!gameStarted) {
+      throw new IllegalStateException("Game has not been started");
+    }
+    if (player != getCurrentPlayer()) {
+      throw new IllegalStateException("Not this player's turn");
+    }
+    player.setPlayerPosition(player.getPlayerPosition() + steps);
+  }
+
+  @Override
+  public boolean isGameOver() {
+    if (!gameStarted) {
+      return false;
+    }
+    // TODO: Implement win condition check
+    return false;
+  }
+
+  @Override
+  public Player getCurrentPlayer() {
+    if (!gameStarted) {
+      throw new IllegalStateException("Game has not been started");
+    }
+    return players.get(currentPlayerIndex);
+  }
+
+  @Override
+  public void nextTurn() {
+    if (!gameStarted) {
+      throw new IllegalStateException("Game has not been started");
+    }
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+  }
+
   public void launchGame(GameBoardFactory.BoardType boardType, String fileName) {
     GameBoardFactory factory = new GameBoardFactory();
     TileLogic tileLogic = factory.createBoard(boardType, fileName);
     gameboard = new Gameboard(tileLogic);
 
-    gameboard.getPlayerLogic().addPlayer("Spiller 1");
-    gameboard.getPlayerLogic().addPlayer("Spiller 2");
-
+    // Add players from the controller's player list
+    for (Player player : players) {
+      gameboard.getPlayerLogic().addPlayer(player.getName());
+    }
 
     List<String> tilePaths = uiElementController.getTileImagePaths(tileLogic);
     UIRenderer renderer = new UIRenderer();
@@ -68,21 +144,21 @@ public class LadderGameController {
 
     startTile = renderer.getStartTile();
 
-
     Platform.runLater(() ->
-        drawLaddersWithRepeatedSprites(
-            ((LadderTileLogic) gameboard.getTileLogic()).getLadderMap()
-        )
+            drawLaddersWithRepeatedSprites(
+                    ((LadderTileLogic) gameboard.getTileLogic()).getLadderMap()
+            )
     );
 
-
-
-    // Første visning av spillere
+    // Initial player positions
     for (int i = 0; i < gameboard.getPlayerLogic().getPlayerList().size(); i++) {
       int startPos = gameboard.getPlayerLogic().getPlayerList().get(i).getPlayerPosition();
       uiElementController.updatePlayerPosition(i, startPos);
     }
     uiElementController.renderPlayers(tileNodes, startTile);
+
+    // Start the game
+    startGame();
   }
 
   private void handleDiceRoll() {
@@ -102,12 +178,12 @@ public class LadderGameController {
     uiElementController.renderPlayers(tileNodes, startTile);
 
     if (newPosition >= 100) {
-      logArea.appendText(currentPlayer.getPlayerName() + " vant spillet!\n");
-      currentPlayerText.setText(currentPlayer.getPlayerName() + " har vunnet!");
+      logArea.appendText(currentPlayer.getName() + " vant spillet!\n");
+      currentPlayerText.setText(currentPlayer.getName() + " har vunnet!");
     } else {
-      logArea.appendText(currentPlayer.getPlayerName() + " kastet: " + roll + " og flyttet til: " + newPosition + "\n");
+      logArea.appendText(currentPlayer.getName() + " kastet: " + roll + " og flyttet til: " + newPosition + "\n");
       currentPlayerIndex = (currentPlayerIndex + 1) % gameboard.getPlayerLogic().getPlayerList().size();
-      currentPlayerText.setText(gameboard.getPlayerLogic().getPlayerList().get(currentPlayerIndex).getPlayerName() + " sin tur");
+      currentPlayerText.setText(gameboard.getPlayerLogic().getPlayerList().get(currentPlayerIndex).getName() + " sin tur");
     }
   }
 
@@ -115,19 +191,11 @@ public class LadderGameController {
     // Delegér all tegning til View-laget
     UIRenderer renderer = new UIRenderer();
     renderer.renderLadders(
-        arrowCanvas,
-        ladderMap,
-        tileNodes
+            arrowCanvas,
+            ladderMap,
+            tileNodes
     );
   }
-
-
-
-
-
-
-
-
 
   public void returnToMenu() {
     manager.switchTo("startMenu");

@@ -14,7 +14,7 @@ public class GameboardLogic {
             int bounce = currentPos - BOARD_SIZE;
             currentPos = BOARD_SIZE - bounce;
             player.setPlayerPosition(currentPos);
-            System.out.println(player.getPlayerName() + " bounced back to " + currentPos);
+            System.out.println(player.getName() + " bounced back to " + currentPos);
         }
 
         Tile currentTile = tileLogic.getTileByNumber(currentPos);
@@ -33,7 +33,7 @@ public class GameboardLogic {
         } else {
             moveType = "fell down a ladder to";
         }
-        System.out.println(player.getPlayerName() + " " + moveType + " " + newPos);
+        System.out.println(player.getName() + " " + moveType + " " + newPos);
     }
 
     public boolean checkWinCondition(Player player) {

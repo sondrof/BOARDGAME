@@ -63,12 +63,20 @@ public class PlayerFileLoader {
 
                 if (parts.length == 3) {
                     String name = parts[0];
-                    String token = parts[1];
+                    String tokenStr = parts[1];
                     int position = Integer.parseInt(parts[2].trim());
 
-                    Player player = new Player(name, token);
-                    player.setPlayerPosition(position);
-                    players.add(player);
+                    try {
+                        PlayerToken token = PlayerToken.valueOf(tokenStr);
+                        Player player = new Player(name, token);
+                        player.setPlayerPosition(position);
+                        players.add(player);
+                    } catch (IllegalArgumentException e) {
+                        // If token is not found in enum, use DEFAULT
+                        Player player = new Player(name, PlayerToken.DEFAULT);
+                        player.setPlayerPosition(position);
+                        players.add(player);
+                    }
                 }
             }
             return players;

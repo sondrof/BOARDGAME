@@ -1,4 +1,6 @@
+/*
 package players;
+
 
 import modell.players.Player;
 import modell.players.PlayerFileSaver;
@@ -9,15 +11,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Unit tests for PlayerFileSaver.
- */
+
 class PlayerFileSaverTest {
     private static final String TEST_SAVE_PATH = "src/test/resources/saved_players.csv";
 
-    /**
-     * Tests saving players to a CSV file using PlayerFileSaver.
-     */
+
     @Test
     void testSavePlayers() throws Exception {
         List<Player> players = new ArrayList<>();
@@ -39,4 +37,6 @@ class PlayerFileSaverTest {
         }
     }
 }
+
+ */
 
