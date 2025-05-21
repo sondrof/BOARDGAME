@@ -18,4 +18,6 @@ public class StartMenuController {
     gameController.launchGame(type, filename);
     manager.switchTo("ladderGame");
   }
+
+
 }

@@ -27,7 +27,7 @@ public class LadderTile extends Tile {
     public LadderTile(int tileNumber, int ladderValue) {
         super(tileNumber);
         this.ladderValue = ladderValue;
-    }
+    }   
 
     /**
      * Returns the ladder effect value.

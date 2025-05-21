@@ -6,11 +6,12 @@ import modell.gameboard.GameBoardFactory.BoardType;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-
-import static view.ui.UIFactory.*;
+import javafx.scene.control.ContentDisplay;
+import view.ui.ResourceLoader;
 
 public class StartMenuSceneView extends AbstractScene {
 
@@ -21,14 +22,35 @@ public class StartMenuSceneView extends AbstractScene {
   private static Scene buildScene(SceneManager manager) {
     StartMenuController controller = new StartMenuController(manager);
 
-    Button gameAButton = button("Start Spill A (standard)", () ->
-        controller.launchGame(BoardType.STANDARD, null));
+    Button gameAButton = new Button("Start Spill A (standard)");
+    gameAButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
+    gameAButton.setContentDisplay(ContentDisplay.LEFT);
+    gameAButton.setOnAction(e -> controller.launchGame(BoardType.STANDARD, null));
 
-    Button gameBButton = button("Start Spill B (custom)", () ->
-        controller.launchGame(BoardType.FROM_FILE, "custom_board.json"));
+    Button gameBButton = new Button("Start Spill B (custom)");
+    gameBButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
+    gameBButton.setContentDisplay(ContentDisplay.LEFT);
+    gameBButton.setOnAction(e -> controller.launchGame(BoardType.FROM_FILE, "custom_board.json"));
 
-    VBox layout = groupButtons(Pos.CENTER, 20, new Insets(20), gameAButton, gameBButton);
+    VBox layout = new VBox(20, gameAButton, gameBButton);
+    layout.setAlignment(Pos.CENTER);
+    layout.setPadding(new Insets(20));
+
+
+    BackgroundImage bg = new BackgroundImage(
+        ResourceLoader.getBackground("start_background.png"),
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundPosition.DEFAULT,
+        new BackgroundSize(100, 100, true, true, true, true)
+    );
+    layout.setBackground(new Background(bg));
 
     return new Scene(layout, 1000, 750);
+  }
+
+  @Override
+  public void onEnter() {
+    ResourceLoader.preloadStartMenuAssets();
   }
 }

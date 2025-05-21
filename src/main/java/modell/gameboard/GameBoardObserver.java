@@ -6,7 +6,7 @@ import modell.players.Player;
 public interface GameBoardObserver {
 
 
-    void onPlayerMove(Player player, int oldPosition, int newPosition, int diceRoll);
+    void onPlayerMove(int playerId, int oldPosition, int newPosition, int diceRoll);
 
 
     void onSpecialTileActivated(Player player, int fromTile, int toTile, int specialValue);
