@@ -22,27 +22,26 @@ public class StartMenuSceneView extends AbstractScene {
   private static Scene buildScene(SceneManager manager) {
     StartMenuController controller = new StartMenuController(manager);
 
-    Button gameAButton = new Button("Start Spill A (standard)");
-    gameAButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
-    gameAButton.setContentDisplay(ContentDisplay.LEFT);
-    gameAButton.setOnAction(e -> controller.launchGame(BoardType.STANDARD, null));
+    Button ladderGameButton = new Button("Ladder Game");
+    ladderGameButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
+    ladderGameButton.setContentDisplay(ContentDisplay.LEFT);
+    ladderGameButton.setOnAction(e -> controller.launchGameSetup("ladder"));
 
-    Button gameBButton = new Button("Start Spill B (custom)");
-    gameBButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
-    gameBButton.setContentDisplay(ContentDisplay.LEFT);
-    gameBButton.setOnAction(e -> controller.launchGame(BoardType.FROM_FILE, "custom_board.json"));
+    Button otherGameButton = new Button("Other Game (Coming Soon)");
+    otherGameButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
+    otherGameButton.setContentDisplay(ContentDisplay.LEFT);
+    otherGameButton.setDisable(true); // Disable until implemented
 
-    VBox layout = new VBox(20, gameAButton, gameBButton);
+    VBox layout = new VBox(20, ladderGameButton, otherGameButton);
     layout.setAlignment(Pos.CENTER);
     layout.setPadding(new Insets(20));
 
-
     BackgroundImage bg = new BackgroundImage(
-        ResourceLoader.getBackground("start_background.png"),
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundPosition.DEFAULT,
-        new BackgroundSize(100, 100, true, true, true, true)
+            ResourceLoader.getBackground("start_background.png"),
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.DEFAULT,
+            new BackgroundSize(100, 100, true, true, true, true)
     );
     layout.setBackground(new Background(bg));
 
