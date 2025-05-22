@@ -99,7 +99,7 @@ public class LadderGameSceneView extends AbstractScene {
     actionButtons.getChildren().addAll(
             UIFactory.button("Save Game", controller::saveGame),
             UIFactory.button("Load Game", controller::loadGame),
-            UIFactory.button("Return to Menu", controller::endGame)
+            UIFactory.button("Return to Menu", controller::returnToMenu)
     );
 
     rightBox.getChildren().addAll(logArea, controlsBox, actionButtons);

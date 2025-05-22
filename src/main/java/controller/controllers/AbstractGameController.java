@@ -23,4 +23,5 @@ public abstract class AbstractGameController {
     public abstract boolean isGameOver();
     public abstract Player getCurrentPlayer();
     public abstract void nextTurn();
+    public abstract void returnToMenu();
 }

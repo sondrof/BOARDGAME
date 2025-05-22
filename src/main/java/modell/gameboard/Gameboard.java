@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Gameboard {
-    private final GameBoardFactory factory;
+    private final LadderGameBoardFactory factory;
     private LadderTileLogic tileLogic;
     private PlayerLogic playerLogic;
     private GameboardLogic gameboardLogic;
@@ -20,8 +20,8 @@ public class Gameboard {
     private Scanner scanner;
 
     public Gameboard() {
-        this.factory = new GameBoardFactory();
-        this.tileLogic = factory.createBoard(GameBoardFactory.BoardType.STANDARD, null);
+        this.factory = new LadderGameBoardFactory();
+        this.tileLogic = (LadderTileLogic) factory.createBoard(LadderBoardType.STANDARD, null);
         playerLogic = new PlayerLogic(new DiceSet(2));
         gameboardLogic = new GameboardLogic();
         scanner = new Scanner(System.in);
@@ -31,7 +31,7 @@ public class Gameboard {
         if (!(tileLogic instanceof LadderTileLogic)) {
             throw new IllegalArgumentException("Gameboard requires LadderTileLogic");
         }
-        this.factory = new GameBoardFactory();
+        this.factory = new LadderGameBoardFactory();
         this.tileLogic = (LadderTileLogic) tileLogic;
         this.playerLogic = new PlayerLogic(new DiceSet(2));
         this.gameboardLogic = new GameboardLogic();
