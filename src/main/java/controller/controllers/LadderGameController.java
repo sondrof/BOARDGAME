@@ -225,6 +225,7 @@ public class LadderGameController extends AbstractGameController {
     );
   }
 
+  @Override
   public void returnToMenu() {
     manager.switchTo("startMenu");
   }
