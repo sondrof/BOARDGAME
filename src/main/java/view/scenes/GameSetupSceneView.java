@@ -13,6 +13,22 @@ import modell.gameboard.LadderBoardType;
 import view.ui.ResourceLoader;
 import view.ui.UIFactory;
 
+/**
+ * Scene view for the game setup interface.
+ * Handles the UI for configuring game settings, including player setup,
+ * board type selection, and game initialization.
+ *
+ * <p>This scene provides functionality for:
+ * <ul>
+ *     <li>Adding and removing players with unique names and tokens</li>
+ *     <li>Selecting different board types</li>
+ *     <li>Loading previous game states</li>
+ *     <li>Starting a new game with the configured settings</li>
+ * </ul>
+ *
+ * @author didrik
+ * @version 1.0
+ */
 public class GameSetupSceneView extends AbstractScene {
     private final GameSetupController controller;
     private final VBox playerSetupBox;

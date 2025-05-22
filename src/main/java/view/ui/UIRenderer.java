@@ -12,14 +12,44 @@ import javafx.scene.layout.StackPane;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Core rendering class for game board visualization.
+ * Handles the creation and management of game board elements and their visual representation.
+ *
+ * <p>This class manages:
+ * <ul>
+ *     <li>Game board tile rendering and layout</li>
+ *     <li>Ladder placement and visualization</li>
+ *     <li>Start tile creation and positioning</li>
+ *     <li>Grid-based board organization</li>
+ * </ul>
+ *
+ * @author Sondre Odberg
+ * @version 1.0
+ */
 public class UIRenderer {
 
   private StackPane startTile;
 
+  /**
+   * Creates a new UIRenderer instance.
+   * The renderer maintains no state and performs all rendering through method calls.
+   */
   public UIRenderer() {
     // Ingen tilstand, alt rendres via metodekall
   }
 
+  /**
+   * Renders a single tile on the game board grid.
+   * Creates a tile with an image and a number label.
+   *
+   * @param grid The GridPane to add the tile to
+   * @param imagePath The path to the tile's image
+   * @param tileNumber The number to display on the tile
+   * @param col The column position in the grid
+   * @param row The row position in the grid
+   * @return The created StackPane containing the tile
+   */
   public StackPane renderTile(GridPane grid, String imagePath, int tileNumber, int col, int row) {
     ImageView imageView = ResourceLoader.getTileIcon(imagePath, 60);
     Label label = new Label(String.valueOf(tileNumber));
@@ -31,6 +61,16 @@ public class UIRenderer {
     return tileStack;
   }
 
+  /**
+   * Renders the complete game board with tiles arranged in a snake pattern.
+   * Creates and positions all tiles, including the start tile.
+   *
+   * @param grid The GridPane to render the board on
+   * @param tileImagePaths List of image paths for each tile
+   * @param rows Number of rows in the board
+   * @param cols Number of columns in the board
+   * @param tileNodes Map to store tile number to StackPane mappings
+   */
   public void renderTiles(GridPane grid, List<String> tileImagePaths,
                           int rows, int cols,
                           Map<Integer, StackPane> tileNodes) {
@@ -65,6 +105,14 @@ public class UIRenderer {
     grid.add(startTile, 0, rows);
   }
 
+  /**
+   * Renders ladders on the game board using a canvas.
+   * Draws ladder sprites between connected tiles based on the ladder map.
+   *
+   * @param canvas The canvas to draw the ladders on
+   * @param ladderMap Map of tile numbers to their ladder destinations
+   * @param tileNodes Map of tile numbers to their StackPane containers
+   */
   public void renderLadders(Canvas canvas,
                             Map<Integer, Integer> ladderMap,
                             Map<Integer, StackPane> tileNodes) {
@@ -115,6 +163,15 @@ public class UIRenderer {
     }
   }
 
+  /**
+   * Draws a single ladder between two tiles.
+   * Helper method for rendering individual ladders.
+   *
+   * @param gc The GraphicsContext to draw with
+   * @param sprite The ladder sprite image
+   * @param startNode The starting tile's StackPane
+   * @param endNode The ending tile's StackPane
+   */
   private void drawSingleLadder(GraphicsContext gc,
                                 Image sprite,
                                 StackPane startNode,
@@ -145,6 +202,16 @@ public class UIRenderer {
     gc.restore();
   }
 
+  /**
+   * Renders a ladder between two specific tiles.
+   * Helper method for rendering individual ladders with specific coordinates.
+   *
+   * @param from The starting tile number
+   * @param to The ending tile number
+   * @param gc The GraphicsContext to draw with
+   * @param sprite The ladder sprite image
+   * @param tileNodes Map of tile numbers to their StackPane containers
+   */
   private void renderLadderBetween(int from, int to,
                                    GraphicsContext gc,
                                    Image sprite,
@@ -157,9 +224,9 @@ public class UIRenderer {
     Bounds b2 = endNode.localToScene(endNode.getBoundsInLocal());
 
     double x1 = b1.getMinX() + b1.getWidth()/2,
-        y1 = b1.getMinY() + b1.getHeight()/2,
-        x2 = b2.getMinX() + b2.getWidth()/2,
-        y2 = b2.getMinY() + b2.getHeight()/2;
+            y1 = b1.getMinY() + b1.getHeight()/2,
+            x2 = b2.getMinX() + b2.getWidth()/2,
+            y2 = b2.getMinY() + b2.getHeight()/2;
 
     double dx = x2-x1, dy = y2-y1;
     double angle = Math.toDegrees(Math.atan2(dy, dx));
@@ -176,7 +243,11 @@ public class UIRenderer {
     gc.restore();
   }
 
-
+  /**
+   * Gets the start tile StackPane.
+   *
+   * @return The StackPane representing the start tile
+   */
   public StackPane getStartTile() {
     return startTile;
   }
