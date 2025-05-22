@@ -6,8 +6,38 @@ import javafx.scene.layout.StackPane;
 
 import java.util.*;
 
+/**
+ * Utility class for rendering player tokens on the game board.
+ * Manages the visual representation and positioning of player pieces.
+ *
+ * <p>This class handles:
+ * <ul>
+ *     <li>Player token placement on board tiles</li>
+ *     <li>Multiple player positioning on the same tile</li>
+ *     <li>Token image loading and scaling</li>
+ *     <li>Dynamic updates of player positions</li>
+ * </ul>
+ *
+ * @author Sondre Odberg
+ * @version 1.0
+ */
 public class PlayerRenderer {
 
+  /**
+   * Renders player tokens on the game board based on their current positions.
+   * Clears existing player tokens and places them according to the provided positions.
+   *
+   * <p>The rendering process:
+   * <ol>
+   *     <li>Removes all existing player tokens from tiles</li>
+   *     <li>Groups players by their current tile position</li>
+   *     <li>Creates and positions player tokens with appropriate offsets</li>
+   * </ol>
+   *
+   * @param playerPositions Map of player IDs to their current tile positions
+   * @param tileNodes Map of tile numbers to their StackPane containers
+   * @param startTile StackPane for the start position (position 0)
+   */
   public void renderPlayers(Map<Integer, Integer> playerPositions,
                             Map<Integer, StackPane> tileNodes,
                             StackPane startTile) {
@@ -49,6 +79,13 @@ public class PlayerRenderer {
   }
 
 
+  /**
+   * Creates an ImageView for a player token with the specified ID.
+   * Loads the appropriate player icon and configures its display properties.
+   *
+   * @param playerId The ID of the player whose token to create
+   * @return An ImageView configured with the player's token image
+   */
   private ImageView createPlayerIcon(int playerId) {
     String filename = "player" + playerId + ".png";
     Image image = ResourceLoader.getPlayerIcon(filename);

@@ -18,8 +18,20 @@ import view.ui.UIFactory;
 import static view.ui.UIFactory.button;
 
 /**
- * Scene-view for "Stiger og slanger".
- * Knytter sammen LadderGameController med JavaFX-UI.
+ * Scene view for the main ladder game interface.
+ * Manages the game board display, player controls, and game state visualization.
+ *
+ * <p>This scene provides:
+ * <ul>
+ *     <li>Interactive game board with ladders and snakes</li>
+ *     <li>Dice rolling mechanics and animations</li>
+ *     <li>Game log for tracking moves and events</li>
+ *     <li>Save/load game functionality</li>
+ *     <li>Player turn management and phase control</li>
+ * </ul>
+ *
+ * @author Sondre Odberg
+ * @version 1.0
  */
 public class LadderGameSceneView extends AbstractScene {
   private final LadderGameController controller;

@@ -4,6 +4,9 @@ package modell.exceptions;
  * Exception thrown when there is an error saving board configuration to a JSON file.
  * This typically occurs when there are I/O errors writing to the file,
  * when the file location is not accessible, or when there are issues with JSON serialization.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class BoardSaveException extends Exception {
     /**

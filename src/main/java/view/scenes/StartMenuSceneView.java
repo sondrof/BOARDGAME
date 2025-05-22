@@ -11,6 +11,20 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
 import view.ui.ResourceLoader;
 
+/**
+ * Scene view for the application's main menu interface.
+ * Provides the entry point for users to start new games or access different game modes.
+ *
+ * <p>This scene offers:
+ * <ul>
+ *     <li>Game mode selection buttons</li>
+ *     <li>Visual feedback for available and upcoming features</li>
+ *     <li>Resource preloading for smooth transitions</li>
+ * </ul>
+ *
+ * @author Sondre Odberg
+ * @version 1.0
+ */
 public class StartMenuSceneView extends AbstractScene {
 
   public StartMenuSceneView(SceneManager manager) {

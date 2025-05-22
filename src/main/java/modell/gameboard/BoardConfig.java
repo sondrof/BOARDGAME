@@ -21,6 +21,9 @@ import java.util.Map;
  * tiles.put(20, -5); // Tile 20 has a ladder going down 5 spaces
  * config.setTileConfigs(tiles);
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class BoardConfig {
     private int boardSize;

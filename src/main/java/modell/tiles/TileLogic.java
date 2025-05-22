@@ -20,6 +20,9 @@ import java.util.List;
  * int size = logic.getBoardSize();       // Get total number of tiles
  * List<Tile> allTiles = logic.getTiles(); // Get all tiles
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public abstract class TileLogic {
   /** List containing all tiles on the board */

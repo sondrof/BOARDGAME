@@ -14,6 +14,9 @@ import java.util.Map;
 
 /**
  * Handles loading board configurations from JSON files.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class BoardFileLoader {
 

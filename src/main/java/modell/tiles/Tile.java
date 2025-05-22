@@ -16,6 +16,9 @@ package modell.tiles;
  * int effect = tile.getEffect();       // Get the tile's effect
  * String desc = tile.getDescription(); // Get a description of the tile
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public abstract class Tile {
   /** Maximum allowed tile number on the board */

@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
  * logic.addLadder(5, 10);               // Add a ladder that moves up 10 spaces
  * Map<Integer, Integer> ladders = logic.getLadderMap();  // Get all ladders
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class LadderTileLogic extends TileLogic {
     /** Maximum allowed ladder effect value */

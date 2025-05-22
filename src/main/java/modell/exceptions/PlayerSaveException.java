@@ -4,6 +4,9 @@ package modell.exceptions;
  * Exception thrown when there is an error saving player data to a file.
  * This typically occurs when there are I/O errors writing to the CSV file
  * or when the file location is not accessible.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class PlayerSaveException extends Exception {
     /**

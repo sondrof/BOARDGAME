@@ -4,6 +4,9 @@ package modell.exceptions;
  * Exception thrown when there is an error loading player data from a file.
  * This can occur due to I/O errors, file not found, or invalid data format
  * in the CSV file containing player information.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class PlayerLoadException extends Exception {
     /**

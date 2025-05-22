@@ -18,6 +18,9 @@ import java.util.List;
  * int total = diceSet.roll();        // Roll both dice and get sum
  * int firstDie = diceSet.getDie(0);  // Get first die's value
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class DiceSet {
     /** Maximum number of dice allowed in the collection */
