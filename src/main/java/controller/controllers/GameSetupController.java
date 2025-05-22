@@ -17,6 +17,7 @@ public class GameSetupController {
     private final SceneManager sceneManager;
     private final GameSetupModel model;
     private GameSetupSceneView view;
+    private LadderBoardType selectedBoardType = LadderBoardType.STANDARD;
 
     public GameSetupController(SceneManager sceneManager, String gameType) {
         this.sceneManager = sceneManager;
@@ -68,8 +69,7 @@ public class GameSetupController {
 
             // Launch the game with the selected board type
             if (gameController instanceof LadderGameController ladderController) {
-                LadderBoardType boardType = LadderBoardType.valueOf(model.getGameMode().toUpperCase());
-                ladderController.launchGame(boardType, null);
+                ladderController.launchGame(selectedBoardType, null);
             }
         } catch (IllegalStateException | IllegalArgumentException e) {
             view.showError("Cannot Start Game", e.getMessage());
@@ -105,5 +105,13 @@ public class GameSetupController {
 
     public GameSetupModel getModel() {
         return model;
+    }
+
+    public void setBoardType(LadderBoardType boardType) {
+        this.selectedBoardType = boardType;
+    }
+
+    public LadderBoardType getSelectedBoardType() {
+        return selectedBoardType;
     }
 }
