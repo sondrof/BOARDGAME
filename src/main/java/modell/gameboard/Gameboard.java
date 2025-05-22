@@ -15,7 +15,7 @@ public class Gameboard {
     private LadderTileLogic tileLogic;
     private PlayerLogic playerLogic;
     private GameboardLogic gameboardLogic;
-    private static final int BOARD_SIZE = 90;
+    private static final int BOARD_SIZE = 100;
     private int roundNumber = 1;
     private Scanner scanner;
 

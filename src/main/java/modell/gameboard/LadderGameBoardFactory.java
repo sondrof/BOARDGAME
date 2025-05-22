@@ -50,66 +50,43 @@ public class LadderGameBoardFactory {
 
     private TileLogic createStandardBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
-        logic.addLadder(4, 10);
-        logic.addLadder(8, 22);
-        logic.addLadder(28, 30);
-        logic.addLadder(40, 20);
-        logic.addLadder(80, 9);
-        logic.addLadder(17, -10);
-        logic.addLadder(54, -20);
-        logic.addLadder(62, -15);
-        logic.addLadder(64, -4);
-        logic.addLadder(87, -20);
+        generateBoard(logic, 100);
+        setStandardTiles(logic);
         return logic;
     }
 
     private TileLogic createManyLaddersBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
-        for (int i = 3; i < 90; i += 6) {
-            logic.addLadder(i, (i % 2 == 0) ? 8 : -7);
-        }
+        generateBoard(logic, 100);
+        setManyLaddersTiles(logic);
         return logic;
     }
 
     private TileLogic createFewLaddersBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
-        logic.addLadder(10, 15);
-        logic.addLadder(30, -12);
-        logic.addLadder(50, 20);
-        logic.addLadder(70, -18);
+        generateBoard(logic, 100);
+        setFewLaddersTiles(logic);
         return logic;
     }
 
     private TileLogic createOnlyUpBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
-        logic.addLadder(5, 10);
-        logic.addLadder(15, 12);
-        logic.addLadder(25, 8);
-        logic.addLadder(35, 14);
-        logic.addLadder(55, 10);
-        logic.addLadder(75, 8);
+        generateBoard(logic, 100);
+        setUpLaddersTiles(logic);
         return logic;
     }
 
     private TileLogic createOnlyDownBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
-        logic.addLadder(20, -10);
-        logic.addLadder(30, -12);
-        logic.addLadder(45, -8);
-        logic.addLadder(60, -14);
-        logic.addLadder(80, -10);
+        generateBoard(logic, 100);
+        setDownLaddersTiles(logic);
         return logic;
     }
 
     private TileLogic createOnlyShortBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
-        for (int i = 6; i < 90; i += 12) {
+        generateBoard(logic, 100);
+        for (int i = 6; i < 100; i += 12) {
             logic.addLadder(i, (i % 2 == 0) ? 3 : -3);
         }
         return logic;
@@ -117,13 +94,56 @@ public class LadderGameBoardFactory {
 
     private TileLogic createOnlyLongBoard() {
         LadderTileLogic logic = createTileLogic();
-        generateBoard(logic, 90);
+        generateBoard(logic, 100);
         logic.addLadder(5, 25);
         logic.addLadder(20, -20);
         logic.addLadder(35, 30);
         logic.addLadder(60, -25);
         logic.addLadder(75, 20);
         return logic;
+    }
+
+    private void setStandardTiles(LadderTileLogic logic) {
+        logic.addLadder(2, 32);
+        logic.addLadder(8, 8);
+        logic.addLadder(28, 30);
+        logic.addLadder(40, 20);
+        logic.addLadder(73, 10);
+        logic.addLadder(80, 12);
+        logic.addLadder(12, -3);
+        logic.addLadder(24, -6);
+        logic.addLadder(57, -15);
+        logic.addLadder(64, -29);
+        logic.addLadder(78, -10);
+        logic.addLadder(98, -60);
+    }
+
+    private void setManyLaddersTiles(LadderTileLogic logic) {
+        for (int i = 3; i < 100; i += 6) {
+            logic.addLadder(i, (i % 2 == 0) ? 8 : -7);
+        }
+    }
+
+    private void setFewLaddersTiles(LadderTileLogic logic) {
+        logic.addLadder(15, 35);
+        logic.addLadder(45, -30);
+        logic.addLadder(70, 25);
+    }
+
+    private void setUpLaddersTiles(LadderTileLogic logic) {
+        logic.addLadder(10, 15);
+        logic.addLadder(25, 20);
+        logic.addLadder(40, 25);
+        logic.addLadder(55, 30);
+        logic.addLadder(70, 20);
+    }
+
+    private void setDownLaddersTiles(LadderTileLogic logic) {
+        logic.addLadder(20, -15);
+        logic.addLadder(35, -20);
+        logic.addLadder(50, -25);
+        logic.addLadder(65, -30);
+        logic.addLadder(80, -20);
     }
 
     public LadderTileLogic loadTileLogicFromFile(String fileName) {
