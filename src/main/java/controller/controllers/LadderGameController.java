@@ -21,6 +21,12 @@ import modell.tiles.TileLogic;
 import view.ui.ResourceLoader;
 import view.ui.UIRenderer;
 import modell.gameboard.GameResultCalculator;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
+import javafx.scene.layout.VBox;
+import view.ui.GameStandingsDialog;
 
 import java.util.*;
 
@@ -197,7 +203,7 @@ public class LadderGameController extends AbstractGameController {
     rollDiceButton.setDisable(true);
     // Use GameResultCalculator for standings
     standings = GameResultCalculator.calculateStandings(gameboard.getPlayerLogic().getPlayerList(), winner);
-    // TODO: Show popup with standings (to be implemented)
+    GameStandingsDialog.show(standings, () -> manager.switchTo("startMenu"));
   }
 
   public List<Player> getStandings() {
