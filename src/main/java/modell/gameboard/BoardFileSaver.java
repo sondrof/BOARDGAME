@@ -29,6 +29,9 @@ import java.util.Map;
  * LadderTileLogic tileLogic = new LadderTileLogic();
  * BoardFileSaver.saveBoard(gameboardLogic, tileLogic);
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class BoardFileSaver {
     /** The path to the JSON file where board data is stored */

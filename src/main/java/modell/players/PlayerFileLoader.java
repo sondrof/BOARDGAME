@@ -22,6 +22,9 @@ import java.util.List;
  * // Load players from file
  * List<Player> loadedPlayers = PlayerFileLoader.loadPlayers();
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class PlayerFileLoader {
     /** The path to the CSV file where player data is stored */

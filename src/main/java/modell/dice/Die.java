@@ -6,6 +6,9 @@ import java.util.Random;
  * Represents a single six-sided die used in board games.
  * This class simulates a die that can be rolled to generate
  * random numbers between 1 and 6.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class Die {
     /** Stores the current face value of the die */

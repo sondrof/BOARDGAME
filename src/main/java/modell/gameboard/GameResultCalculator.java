@@ -8,6 +8,9 @@ import java.util.List;
 /**
  * Utility class to calculate final standings for a board game.
  * Winner is placed first, others are sorted by position descending.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class GameResultCalculator {
     /**

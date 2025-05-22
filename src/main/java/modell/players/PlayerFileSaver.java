@@ -21,6 +21,9 @@ import java.util.List;
  * List<Player> players = playerLogic.getPlayerList();
  * PlayerFileSaver.savePlayers(players);
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class PlayerFileSaver {
     /** The path to the CSV file where player data is stored */

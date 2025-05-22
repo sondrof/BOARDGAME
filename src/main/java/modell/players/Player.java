@@ -15,6 +15,9 @@ package modell.players;
  * int position = player.getPlayerPosition();  // Get current position
  * player.setPlayerPosition(position + 5);     // Move player forward 5 spaces
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class Player {
   /** The name of the player */

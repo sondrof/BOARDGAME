@@ -12,6 +12,9 @@ package modell.tiles;
  * int effect = ladder.getEffect();             // Returns 10
  * String desc = ladder.getDescription();       // Returns "Ladder up 10 spaces"
  * </pre>
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class LadderTile extends Tile {
     /** The value of the ladder effect (positive for up, negative for down) */

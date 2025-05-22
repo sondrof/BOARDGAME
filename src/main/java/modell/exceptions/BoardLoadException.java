@@ -4,6 +4,9 @@ package modell.exceptions;
  * Exception thrown when there is an error loading board configuration from a JSON file.
  * This can occur due to I/O errors, file not found, invalid JSON format,
  * or missing required fields in the board configuration.
+ *
+ * @author didrik
+ * @version 1.0
  */
 public class BoardLoadException extends Exception {
     /**

@@ -10,15 +10,55 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Represents the main game board for a ladder game.
+ * This class manages the game state, player interactions, and game flow.
+ *
+ * <p>The game board consists of:
+ * <ul>
+ *     <li>A 100-tile board with ladders and snakes</li>
+ *     <li>2-6 players who take turns rolling dice and moving</li>
+ *     <li>Special tiles that can move players up (ladders) or down (snakes)</li>
+ * </ul>
+ *
+ * <p>The game flow:
+ * <ol>
+ *     <li>Initialize the board with ladders and snakes</li>
+ *     <li>Set up players (2-6 players)</li>
+ *     <li>Players take turns rolling dice and moving</li>
+ *     <li>Special tiles are activated when players land on them</li>
+ *     <li>First player to reach tile 100 wins</li>
+ * </ol>
+ *
+ * @author didrik
+ * @version 1.0
+ */
 public class Gameboard {
+    /** Factory for creating game board components */
     private final LadderGameBoardFactory factory;
+
+    /** Logic for handling special tiles (ladders and snakes) */
     private LadderTileLogic tileLogic;
+
+    /** Logic for managing player actions and state */
     private PlayerLogic playerLogic;
+
+    /** Logic for managing the game board state */
     private GameboardLogic gameboardLogic;
+
+    /** Total number of tiles on the board */
     private static final int BOARD_SIZE = 100;
+
+    /** Current round number */
     private int roundNumber = 1;
+
+    /** Scanner for reading user input */
     private Scanner scanner;
 
+    /**
+     * Creates a new game board with standard configuration.
+     * Initializes the board with default ladders and snakes.
+     */
     public Gameboard() {
         this.factory = new LadderGameBoardFactory();
         this.tileLogic = (LadderTileLogic) factory.createBoard(LadderBoardType.STANDARD, null);
@@ -27,6 +67,12 @@ public class Gameboard {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Creates a new game board with custom tile logic.
+     *
+     * @param tileLogic the custom tile logic to use
+     * @throws IllegalArgumentException if the provided tile logic is not a LadderTileLogic
+     */
     public Gameboard(TileLogic tileLogic) {
         if (!(tileLogic instanceof LadderTileLogic)) {
             throw new IllegalArgumentException("Gameboard requires LadderTileLogic");
@@ -38,6 +84,16 @@ public class Gameboard {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Initializes the game board and sets up players.
+     * This method:
+     * <ol>
+     *     <li>Sets up the ladders and snakes on the board</li>
+     *     <li>Prompts for the number of players (2-6)</li>
+     *     <li>Gets player names and creates player objects</li>
+     *     <li>Displays the list of players</li>
+     * </ol>
+     */
     public void initBoard() {
         setUpLadders();
 
@@ -55,6 +111,12 @@ public class Gameboard {
         }
     }
 
+    /**
+     * Prompts for and validates the number of players.
+     * Ensures the number is between 2 and 6.
+     *
+     * @return the validated number of players
+     */
     private int getValidPlayerCount() {
         while (true) {
             try {
@@ -72,6 +134,10 @@ public class Gameboard {
         }
     }
 
+    /**
+     * Sets up the initial ladder and snake positions on the board.
+     * Creates a predefined configuration of ladders and snakes.
+     */
     private void setUpLadders() {
         Map<Integer, Integer> upLadders = Map.of(
                 4, 10,
@@ -96,6 +162,16 @@ public class Gameboard {
         downLadders.forEach(tileLogic::addLadder);
     }
 
+    /**
+     * Executes one round of the game.
+     * Each player takes their turn in sequence:
+     * <ol>
+     *     <li>Rolls the dice</li>
+     *     <li>Moves their piece</li>
+     *     <li>Handles any special tile effects</li>
+     *     <li>Checks for win condition</li>
+     * </ol>
+     */
     public void playRound() {
         System.out.println("Round number " + roundNumber);
 
@@ -115,18 +191,37 @@ public class Gameboard {
         roundNumber++;
     }
 
+    /**
+     * Closes the scanner used for user input.
+     * Should be called when the game is finished.
+     */
     public void closeScanner() {
         scanner.close();
     }
 
+    /**
+     * Gets the player logic component.
+     *
+     * @return the PlayerLogic instance
+     */
     public PlayerLogic getPlayerLogic() {
         return playerLogic;
     }
 
+    /**
+     * Gets the game board logic component.
+     *
+     * @return the GameboardLogic instance
+     */
     public GameboardLogic getGameboardLogic() {
         return gameboardLogic;
     }
 
+    /**
+     * Gets the tile logic component.
+     *
+     * @return the LadderTileLogic instance
+     */
     public LadderTileLogic getTileLogic() {
         return tileLogic;
     }

@@ -19,6 +19,9 @@ import java.util.ArrayList;
  * playerLogic.movePlayer(0);  // Move the first player
  * playerLogic.printPlayerStatus();  // Display all players' positions
  * </pre>
+ *
+ * @author Sondre Odberg
+ * @version 1.0
  */
 public class PlayerLogic {
 
