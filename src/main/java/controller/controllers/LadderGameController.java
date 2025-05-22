@@ -1,88 +1,95 @@
 package controller.controllers;
 
 import controller.SceneManager;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import modell.gameboard.*;
 import modell.tiles.LadderTileLogic;
 import modell.tiles.TileLogic;
+import view.ui.AnimationRenderer;
 import view.ui.ResourceLoader;
 import view.ui.UIRenderer;
-import modell.gameboard.GameResultCalculator;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
-import javafx.scene.layout.VBox;
 import view.ui.GameStandingsDialog;
-import modell.gameboard.Gameboard;
 import modell.players.Player;
-import modell.gameboard.LadderGameBoardFactory;
-import modell.gameboard.LadderBoardType;
 
 import java.util.*;
 
-public class LadderGameController extends AbstractGameController {
+/**
+ * Controller for "Stiger og slanger"-scenen, nå delt opp i faser:
+ * IDLE → ROLL_DICE → MOVE_PLAYER → SPECIAL_TILE → IDLE.
+ * Save/load-metodene er uberørt fra originalen.
+ */
+public class LadderGameController extends AbstractGameController implements PhaseSetupHelper {
 
   private final SceneManager manager;
   private Gameboard gameboard;
 
+  // UI-elementer (samme som før)
   private final UIElementController uiElementController = new UIElementController();
-  private final Map<Integer, StackPane> tileNodes = new HashMap<>();
-  private final Map<Integer, Button> tileButtons = new HashMap<>(); // kun brukt i drawArrows()
+  private final Map<Integer, StackPane> tileNodes     = new HashMap<>();
+  private final GridPane boardGrid                    = new GridPane();
+  private final Canvas arrowCanvas                    = new Canvas(600, 660);
+  private final TextArea logArea                      = new TextArea("Spill-logg: ");
+  private final Text currentPlayerText                = new Text("Spiller 1 sin tur");
+  private final Text diceResultText                   = new Text("Roll: ");
+  private final Button rollDiceButton                 = new Button("Roll Dice");
+  // Nye ImageView-felter for dice-animasjon
+  private final javafx.scene.image.ImageView die1View = new javafx.scene.image.ImageView();
+  private final javafx.scene.image.ImageView die2View = new javafx.scene.image.ImageView();
 
-  private final GridPane boardGrid = new GridPane();
-  private final Canvas arrowCanvas = new Canvas(600, 660);
-  private final TextArea logArea = new TextArea("Spill-logg:\n");
-  private final Text currentPlayerText = new Text("Spiller 1 sin tur");
-  private final Text diceResultText = new Text("Roll: ");
-  private final Button rollDiceButton = new Button("Roll Dice");
-
+  // Spill-tilstand
   private StackPane startTile;
   private int currentPlayerIndex = 0;
-  private boolean gameStarted;
-  private boolean gameEnded = false;
-  private List<Player> standings = new ArrayList<>();
+  private boolean gameStarted    = false;
+  private boolean gameEnded      = false;
+  private List<Player> standings  = new ArrayList<>();
+  private int lastDiceResult;
+
+  // Fasestyring
+  private final GamePhaseController phaseController = new GamePhaseController();
 
   public LadderGameController(SceneManager manager, List<Player> players, String gameMode) {
     super(manager, new ArrayList<>(players), gameMode);
     this.manager = manager;
-    this.currentPlayerIndex = 0;
-    this.gameStarted = false;
 
-    rollDiceButton.setOnAction(e -> handleDiceRoll());
+    // --- UI-oppsett (identisk med original) ---
     rollDiceButton.setMaxWidth(Double.MAX_VALUE);
-
     logArea.setEditable(false);
     logArea.setWrapText(true);
     logArea.setPrefHeight(150);
+
+    // Skjul dice ImageView inntil IDLE-fasen
+    die1View.setVisible(false);
+    die2View.setVisible(false);
+    die1View.setFitWidth(50);
+    die1View.setFitHeight(50);
+    die2View.setFitWidth(50);
+    die2View.setFitHeight(50);
+
+    // --- Bind alle faser (IDLE + roll/move/special) til handler-metodene ---
+    phaseController.registerPhaseAction(GamePhase.IDLE, this::idlePhase);
+    configurePhases(phaseController);
   }
 
   @Override
   public void startGame() {
-    if (gameStarted) {
-      throw new IllegalStateException("Game is already started");
-    }
-    if (players.size() < 2) {
-      throw new IllegalStateException("Need at least 2 players to start the game");
-    }
+    if (gameStarted) throw new IllegalStateException("Game is already started");
+    if (players.size() < 2) throw new IllegalStateException("Need at least 2 players to start the game");
     gameStarted = true;
   }
 
   @Override
   public void endGame() {
-    if (!gameStarted) {
-      throw new IllegalStateException("Game has not been started");
-    }
+    if (!gameStarted) throw new IllegalStateException("Game has not been started");
     gameStarted = false;
   }
 
@@ -138,90 +145,189 @@ public class LadderGameController extends AbstractGameController {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
 
+  /**
+   * Initialiserer modell + view, så starter vi i IDLE-fasen.
+   */
   public void launchGame(LadderBoardType boardType, String fileName) {
     LadderGameBoardFactory factory = new LadderGameBoardFactory();
-    TileLogic tileLogic = factory.createBoard(boardType, fileName);
-    gameboard = new Gameboard(tileLogic);
+    TileLogic logic = factory.createBoard(boardType, fileName);
+    gameboard = new Gameboard(logic);
+    players.forEach(p -> gameboard.getPlayerLogic().addPlayer(p.getName()));
 
-    // Add players from the controller's player list
-    for (Player player : players) {
-      gameboard.getPlayerLogic().addPlayer(player.getName());
-    }
-
-    List<String> tilePaths = uiElementController.getTileImagePaths(tileLogic);
     UIRenderer renderer = new UIRenderer();
-    renderer.renderTiles(boardGrid, tilePaths, 10, 10, tileNodes);
-
+    List<String> paths = uiElementController.getTileImagePaths(logic);
+    renderer.renderTiles(boardGrid, paths, 10, 10, tileNodes);
     startTile = renderer.getStartTile();
-
     Platform.runLater(() ->
-            drawLaddersWithRepeatedSprites(
-                    ((LadderTileLogic) gameboard.getTileLogic()).getLadderMap()
-            )
+        renderer.renderLadders(arrowCanvas,
+            ((LadderTileLogic)logic).getLadderMap(),
+            tileNodes
+        )
     );
-
-    // Initial player positions
-    for (int i = 0; i < gameboard.getPlayerLogic().getPlayerList().size(); i++) {
-      int startPos = gameboard.getPlayerLogic().getPlayerList().get(i).getPlayerPosition();
-      uiElementController.updatePlayerPosition(i, startPos);
+    for (int i = 0; i < players.size(); i++) {
+      uiElementController.updatePlayerPosition(
+          i,
+          gameboard.getPlayerLogic().getPlayerList().get(i).getPlayerPosition()
+      );
     }
     uiElementController.renderPlayers(tileNodes, startTile);
 
-    // Start the game
     startGame();
+    phaseController.startPhase();
   }
 
-  private void handleDiceRoll() {
-    if (gameEnded) return;
-    Player currentPlayer = gameboard.getPlayerLogic().getPlayerList().get(currentPlayerIndex);
-    int roll = gameboard.getPlayerLogic().getDiceSet().roll();
-    int oldPosition = currentPlayer.getPlayerPosition();
+  private void animateMovement(int fromTileIndex, int toTileIndex, Runnable onFinished) {
+    StackPane from = tileNodes.get(fromTileIndex);
+    StackPane to   = tileNodes.get(toTileIndex);
+    if (from == null || to == null) {
+      onFinished.run();
+      return;
+    }
 
-    currentPlayer.setPlayerPosition(oldPosition + roll);
-    gameboard.getGameboardLogic().handlePlayerLanding(currentPlayer, gameboard.getTileLogic());
+    // Opprett token med riktig spiller‐ikon
+    ImageView token = new ImageView(
+        ResourceLoader.getPlayerIcon("player" + currentPlayerIndex + ".png")
+    );
+    token.setFitWidth(24);
+    token.setFitHeight(24);
+    from.getChildren().add(token);
 
-    int newPosition = currentPlayer.getPlayerPosition();
-    diceResultText.setText("Roll: " + roll);
+    // Beregn scene-koordinater
+    Point2D p0 = from.localToScene(0,0);
+    Point2D p1 = to.localToScene(0,0);
+    double dx = p1.getX() - p0.getX();
+    double dy = p1.getY() - p0.getY();
 
-    // Bruk index som spiller-ID
-    int playerId = currentPlayerIndex;
-    uiElementController.updatePlayerPosition(playerId, newPosition);
+    // Spill animasjon
+    TranslateTransition tt = new TranslateTransition(Duration.millis(400), token);
+    tt.setByX(dx);
+    tt.setByY(dy);
+    tt.setOnFinished(e -> {
+      from.getChildren().remove(token);
+      onFinished.run();
+    });
+    tt.play();
+  }
+
+  // === PhaseSetupHelper-implementasjon ===
+
+  public void idlePhase() {
+    rollDiceButton.setDisable(false);
+    rollDiceButton.setOnAction(e -> {
+      rollDiceButton.setDisable(true);
+      phaseController.nextPhase(); // → ROLL_DICE
+    });
+  }
+
+  @Override
+  public void rollDicePhase() {
+    // Vis ImageView-ene
+    die1View.setVisible(true);
+    die2View.setVisible(true);
+
+    // Kjør animasjon; når den er ferdig får vi 'a' og 'b'
+    AnimationRenderer.playDiceRoll(die1View, die2View, (a, b) -> {
+      // --- Her setter vi de endelige ansiktene ---
+      die1View.setImage(ResourceLoader.getDiceImage("die_" + a + ".png"));
+      die2View.setImage(ResourceLoader.getDiceImage("die_" + b + ".png"));
+
+      // Summen som før
+      int total = a + b;
+      lastDiceResult = total;
+
+      // Oppdater UI-tekst og logg
+      diceResultText.setText("Roll: " + a + " + " + b + " = " + total);
+      logArea.appendText(getCurrentPlayer().getName()
+          + " kastet: " + a + " + " + b + " = " + total + "\n");
+
+      // Gå videre i flyten
+      phaseController.nextPhase();
+    });
+  }
+
+
+  @Override
+  public void movePlayerPhase() {
+    Player p = getCurrentPlayer();
+    int oldPos = p.getPlayerPosition();
+    int newPos = oldPos + lastDiceResult;
+
+    // Modell‐oppdatering
+    p.setPlayerPosition(newPos);
+
+    // Hvis noen vinner rett etter å ha flyttet (land på eller over 100):
+    if (newPos >= 100) {
+      endGameWithStandings(p);
+      return;
+    }
+
+    // Fjern alle eksisterende token‐noder lagt ut av PlayerRenderer
     uiElementController.renderPlayers(tileNodes, startTile);
 
-    if (newPosition >= 100) {
-      logArea.appendText(currentPlayer.getName() + " vant spillet!\n");
-      currentPlayerText.setText(currentPlayer.getName() + " har vunnet!");
-      endGameWithStandings(currentPlayer);
-    } else {
-      logArea.appendText(currentPlayer.getName() + " kastet: " + roll + " og flyttet til: " + newPosition + "\n");
-      currentPlayerIndex = (currentPlayerIndex + 1) % gameboard.getPlayerLogic().getPlayerList().size();
-      currentPlayerText.setText(gameboard.getPlayerLogic().getPlayerList().get(currentPlayerIndex).getName() + " sin tur");
-    }
+    // Spillers animasjon fra oldPos → newPos
+    animateMovement(oldPos, newPos, () -> {
+      // Tegn "offisiell" ny posisjon
+      uiElementController.updatePlayerPosition(currentPlayerIndex, newPos);
+      uiElementController.renderPlayers(tileNodes, startTile);
+      logArea.appendText(p.getName() + " flyttet til: " + newPos + "\n");
+      phaseController.nextPhase();  // → SPECIAL_TILE
+    });
   }
+
+  @Override
+  public void specialTilePhase() {
+    Player p = getCurrentPlayer();
+    int landed = p.getPlayerPosition();
+
+    // Utfør modell‐effekter (stige/slange etc.)
+    gameboard.getGameboardLogic().handlePlayerLanding(p, gameboard.getTileLogic());
+    int target = p.getPlayerPosition();
+
+    // Sjekk om vi har vunnet via en stige som tar deg over 100
+    if (target >= 100) {
+      endGameWithStandings(p);
+      return;
+    }
+
+    // Hvis ingen stige/slange, gå rett til neste spiller
+    if (target == landed) {
+      nextTurn();
+      currentPlayerText.setText(getCurrentPlayer().getName() + " sin tur");
+      phaseController.nextPhase();  // → IDLE
+      return;
+    }
+
+    // Ellers har vi en stige/slange fra `landed` til `target`
+    // Fjern gamle tokens
+    uiElementController.renderPlayers(tileNodes, startTile);
+
+    animateMovement(landed, target, () -> {
+      // Når animasjonen er ferdig, oppdater UI‐posisjon
+      uiElementController.updatePlayerPosition(currentPlayerIndex, target);
+      uiElementController.renderPlayers(tileNodes, startTile);
+      logArea.appendText(p.getName() + " fikk effekt, nå på: " + target + "\n");
+
+      // Neste spiller
+      nextTurn();
+      currentPlayerText.setText(getCurrentPlayer().getName() + " sin tur");
+      phaseController.nextPhase();  // → IDLE
+    });
+  }
+
+
+
 
   private void endGameWithStandings(Player winner) {
     gameEnded = true;
     rollDiceButton.setDisable(true);
-    // Use GameResultCalculator for standings
-    standings = GameResultCalculator.calculateStandings(gameboard.getPlayerLogic().getPlayerList(), winner);
-    GameStandingsDialog.show(standings, () -> manager.switchTo("startMenu"));
-  }
-
-  public List<Player> getStandings() {
-    return standings;
-  }
-
-  public boolean isGameEnded() {
-    return gameEnded;
-  }
-
-  private void drawLaddersWithRepeatedSprites(Map<Integer, Integer> ladderMap) {
-    // Delegér all tegning til View-laget
-    UIRenderer renderer = new UIRenderer();
-    renderer.renderLadders(
-            arrowCanvas,
-            ladderMap,
-            tileNodes
+    List<Player> result = new ArrayList<>();
+    result.add(winner);
+    for (Player p : players) {
+      if (!p.equals(winner)) result.add(p);
+    }
+    standings = result;
+    Platform.runLater(() ->
+        GameStandingsDialog.show(standings, () -> manager.switchTo("startMenu"))
     );
   }
 
@@ -230,31 +336,16 @@ public class LadderGameController extends AbstractGameController {
     manager.switchTo("startMenu");
   }
 
-  public GridPane getBoardGrid() {
-    return boardGrid;
-  }
+  public GamePhaseController getPhaseController() { return phaseController; }
 
-  public Canvas getArrowCanvas() {
-    return arrowCanvas;
-  }
-
-  public TextArea getLogArea() {
-    return logArea;
-  }
-
-  public Text getCurrentPlayerText() {
-    return currentPlayerText;
-  }
-
-  public Text getDiceResultText() {
-    return diceResultText;
-  }
-
-  public Button getRollDiceButton() {
-    return rollDiceButton;
-  }
-
-  public Map<Integer, StackPane> getTileNodes() {
-    return tileNodes;
-  }
+  // === Getters for SceneView ===
+  public GridPane getBoardGrid()             { return boardGrid; }
+  public Canvas getArrowCanvas()             { return arrowCanvas; }
+  public TextArea getLogArea()               { return logArea; }
+  public Text getCurrentPlayerText()         { return currentPlayerText; }
+  public Text getDiceResultText()            { return diceResultText; }
+  public Button getRollDiceButton()          { return rollDiceButton; }
+  public ImageView getDie1View()             { return die1View; }
+  public ImageView getDie2View()             { return die2View; }
+  public Map<Integer, StackPane> getTileNodes() { return tileNodes; }
 }

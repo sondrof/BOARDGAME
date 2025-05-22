@@ -1,14 +1,14 @@
 package view.scenes;
 
-import controller.SceneManager;
-import controller.controllers.AbstractGameController;
 import controller.controllers.LadderGameController;
+import controller.controllers.AbstractGameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -17,26 +17,32 @@ import view.ui.UIFactory;
 
 import static view.ui.UIFactory.button;
 
+/**
+ * Scene-view for "Stiger og slanger".
+ * Knytter sammen LadderGameController med JavaFX-UI.
+ */
 public class LadderGameSceneView extends AbstractScene {
-  private final AbstractGameController controller;
+  private final LadderGameController controller;
 
-  public LadderGameSceneView(AbstractGameController controller) {
-    super("game", buildScene(controller));
-    this.controller = controller;
+  public LadderGameSceneView(AbstractGameController baseController) {
+    super("game", buildScene());
+    if (!(baseController instanceof LadderGameController)) {
+      throw new IllegalArgumentException("LadderGameSceneView requires a LadderGameController");
+    }
+    this.controller = (LadderGameController) baseController;
     initializeUI();
   }
 
-  private static Scene buildScene(AbstractGameController controller) {
+  private static Scene buildScene() {
     BorderPane root = new BorderPane();
     root.setPrefSize(1000, 750);
 
-    // Add background (same as start menu)
     BackgroundImage bg = new BackgroundImage(
-            ResourceLoader.getBackground("start_background.png"),
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.DEFAULT,
-            new BackgroundSize(100, 100, true, true, true, true)
+        ResourceLoader.getBackground("start_background.png"),
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundPosition.DEFAULT,
+        new BackgroundSize(100, 100, true, true, true, true)
     );
     root.setBackground(new Background(bg));
 
@@ -44,74 +50,74 @@ public class LadderGameSceneView extends AbstractScene {
   }
 
   private void initializeUI() {
-    if (!(controller instanceof LadderGameController)) {
-      throw new IllegalArgumentException("LadderGameSceneView requires a LadderGameController");
-    }
-    LadderGameController ladderController = (LadderGameController) controller;
-
     BorderPane root = (BorderPane) getScene().getRoot();
 
     // --- Board and Ladders (Left) ---
     StackPane boardStack = new StackPane();
     boardStack.setAlignment(Pos.CENTER);
     boardStack.setPrefSize(700, 700);
-    boardStack.setMaxSize(700, 700);
-    boardStack.setMinSize(700, 700);
-    ladderController.getBoardGrid().setPrefSize(700, 700);
-    ladderController.getArrowCanvas().setWidth(700);
-    ladderController.getArrowCanvas().setHeight(700);
+    Canvas arrow = controller.getArrowCanvas();
+    arrow.setWidth(700);
+    arrow.setHeight(700);
+    controller.getBoardGrid().setPrefSize(700, 700);
+
     boardStack.getChildren().addAll(
-            ladderController.getBoardGrid(),
-            ladderController.getArrowCanvas()
+        controller.getBoardGrid(),
+        arrow
     );
 
     // --- Right Side: Log, Controls, Actions ---
     VBox rightBox = new VBox(20);
     rightBox.setAlignment(Pos.TOP_CENTER);
-    rightBox.setPadding(new Insets(20, 10, 20, 10));
+    rightBox.setPadding(new Insets(20));
     rightBox.setPrefWidth(280);
-    rightBox.setMaxWidth(280);
-    rightBox.setMinWidth(280);
 
     // Game Log
-    TextArea logArea = ladderController.getLogArea();
-    logArea.setPrefHeight(350);
-    logArea.setPrefWidth(260);
-    logArea.setMaxWidth(260);
+    TextArea logArea = controller.getLogArea();
+    logArea.setPrefSize(260, 350);
     logArea.setWrapText(true);
 
-    // Game Controls
+    // Game Controls (phases + dice animation)
     VBox controlsBox = new VBox(10);
     controlsBox.setAlignment(Pos.CENTER);
-    Text currentPlayerText = ladderController.getCurrentPlayerText();
+
+    Text currentPlayerText = controller.getCurrentPlayerText();
     currentPlayerText.setFill(Color.WHITE);
-    Text diceResultText = ladderController.getDiceResultText();
+    Text diceResultText = controller.getDiceResultText();
     diceResultText.setFill(Color.WHITE);
+
+    ImageView die1 = controller.getDie1View();
+    ImageView die2 = controller.getDie2View();
+    Button rollBtn = controller.getRollDiceButton();
+
     controlsBox.getChildren().addAll(
-            currentPlayerText,
-            diceResultText,
-            ladderController.getRollDiceButton()
+        currentPlayerText,
+        diceResultText,
+        die1,
+        die2,
+        rollBtn
     );
 
     // Action Buttons
     HBox actionButtons = new HBox(20);
     actionButtons.setAlignment(Pos.CENTER);
     actionButtons.getChildren().addAll(
-            UIFactory.button("Save Game", controller::saveGame),
-            UIFactory.button("Load Game", controller::loadGame),
-            UIFactory.button("Return to Menu", controller::returnToMenu)
+        button("Save Game", controller::saveGame),
+        button("Load Game", controller::loadGame),
+        button("Return to Menu", controller::returnToMenu)
     );
 
     rightBox.getChildren().addAll(logArea, controlsBox, actionButtons);
 
-    // --- Layout ---
+    // --- Assemble ---
     HBox mainBox = new HBox();
     mainBox.setAlignment(Pos.CENTER);
     mainBox.getChildren().addAll(boardStack, rightBox);
-    mainBox.setSpacing(0);
-    mainBox.setPadding(new Insets(0));
 
     root.setCenter(mainBox);
+
+    // Start fase-maskinen nå som UI er satt opp
+    controller.getPhaseController().startPhase();
   }
 
   @Override

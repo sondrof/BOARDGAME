@@ -14,6 +14,7 @@ public class ResourceLoader {
   private static final String TILE_PATH = "/tile/";
   private static final String BUTTON_PATH = "/button/";
   private static final String BACKGROUND_PATH = "/background/";
+  private static final String DICE_PATH = "/dice/";
 
   private static final Map<String, Image> imageCache = new HashMap<>();
 
@@ -61,6 +62,13 @@ public class ResourceLoader {
     getPlayerIcon("player1.png");
     getPlayerIcon("player2.png");
     getBackground("ladder_background.png");
+    for (int i = 1; i <= 6; i++) {
+      getDiceImage("die_" + i + ".png");
+    }
+  }
+
+  public static Image getDiceImage(String fileName) {
+    return getImage(DICE_PATH + fileName);
   }
 
 
@@ -72,6 +80,9 @@ public class ResourceLoader {
 
   public static ImageView getPlayerIconView(String fileName, double size) {
     return getIcon(PLAYER_PATH + fileName, size);
+  }
+  public static ImageView getDiceIcon(String fileName, double size) {
+    return getIcon(DICE_PATH + fileName, size);
   }
 
   public static Image getTileImage(String fileName) {
