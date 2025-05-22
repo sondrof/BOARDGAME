@@ -20,6 +20,13 @@ import modell.tiles.LadderTileLogic;
 import modell.tiles.TileLogic;
 import view.ui.ResourceLoader;
 import view.ui.UIRenderer;
+import modell.gameboard.GameResultCalculator;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
+import javafx.scene.layout.VBox;
+import view.ui.GameStandingsDialog;
 
 import java.util.*;
 
@@ -42,6 +49,8 @@ public class LadderGameController extends AbstractGameController {
   private StackPane startTile;
   private int currentPlayerIndex = 0;
   private boolean gameStarted;
+  private boolean gameEnded = false;
+  private List<Player> standings = new ArrayList<>();
 
   public LadderGameController(SceneManager manager, List<Player> players, String gameMode) {
     super(manager, new ArrayList<>(players), gameMode);
@@ -162,6 +171,7 @@ public class LadderGameController extends AbstractGameController {
   }
 
   private void handleDiceRoll() {
+    if (gameEnded) return;
     Player currentPlayer = gameboard.getPlayerLogic().getPlayerList().get(currentPlayerIndex);
     int roll = gameboard.getPlayerLogic().getDiceSet().roll();
     int oldPosition = currentPlayer.getPlayerPosition();
@@ -180,11 +190,28 @@ public class LadderGameController extends AbstractGameController {
     if (newPosition >= 100) {
       logArea.appendText(currentPlayer.getName() + " vant spillet!\n");
       currentPlayerText.setText(currentPlayer.getName() + " har vunnet!");
+      endGameWithStandings(currentPlayer);
     } else {
       logArea.appendText(currentPlayer.getName() + " kastet: " + roll + " og flyttet til: " + newPosition + "\n");
       currentPlayerIndex = (currentPlayerIndex + 1) % gameboard.getPlayerLogic().getPlayerList().size();
       currentPlayerText.setText(gameboard.getPlayerLogic().getPlayerList().get(currentPlayerIndex).getName() + " sin tur");
     }
+  }
+
+  private void endGameWithStandings(Player winner) {
+    gameEnded = true;
+    rollDiceButton.setDisable(true);
+    // Use GameResultCalculator for standings
+    standings = GameResultCalculator.calculateStandings(gameboard.getPlayerLogic().getPlayerList(), winner);
+    GameStandingsDialog.show(standings, () -> manager.switchTo("startMenu"));
+  }
+
+  public List<Player> getStandings() {
+    return standings;
+  }
+
+  public boolean isGameEnded() {
+    return gameEnded;
   }
 
   private void drawLaddersWithRepeatedSprites(Map<Integer, Integer> ladderMap) {
