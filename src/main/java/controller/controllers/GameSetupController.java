@@ -6,7 +6,8 @@ import modell.players.Player;
 import modell.players.PlayerToken;
 import modell.players.PlayerFileLoader;
 import modell.setup.GameSetupModel;
-import modell.gameboard.GameBoardFactory;
+import modell.gameboard.LadderGameBoardFactory;
+import modell.gameboard.LadderBoardType;
 import view.scenes.GameSetupSceneView;
 import view.scenes.LadderGameSceneView;
 
@@ -67,10 +68,8 @@ public class GameSetupController {
 
             // Launch the game with the selected board type
             if (gameController instanceof LadderGameController ladderController) {
-                ladderController.launchGame(
-                        GameBoardFactory.BoardType.valueOf(model.getGameMode().toUpperCase()),
-                        null
-                );
+                LadderBoardType boardType = LadderBoardType.valueOf(model.getGameMode().toUpperCase());
+                ladderController.launchGame(boardType, null);
             }
         } catch (IllegalStateException | IllegalArgumentException e) {
             view.showError("Cannot Start Game", e.getMessage());

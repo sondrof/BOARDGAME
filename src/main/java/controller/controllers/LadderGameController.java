@@ -13,9 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import modell.gameboard.GameBoardFactory;
-import modell.gameboard.Gameboard;
-import modell.players.Player;
 import modell.tiles.LadderTileLogic;
 import modell.tiles.TileLogic;
 import view.ui.ResourceLoader;
@@ -27,6 +24,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.layout.VBox;
 import view.ui.GameStandingsDialog;
+import modell.gameboard.Gameboard;
+import modell.players.Player;
+import modell.gameboard.LadderGameBoardFactory;
+import modell.gameboard.LadderBoardType;
 
 import java.util.*;
 
@@ -137,8 +138,8 @@ public class LadderGameController extends AbstractGameController {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
 
-  public void launchGame(GameBoardFactory.BoardType boardType, String fileName) {
-    GameBoardFactory factory = new GameBoardFactory();
+  public void launchGame(LadderBoardType boardType, String fileName) {
+    LadderGameBoardFactory factory = new LadderGameBoardFactory();
     TileLogic tileLogic = factory.createBoard(boardType, fileName);
     gameboard = new Gameboard(tileLogic);
 

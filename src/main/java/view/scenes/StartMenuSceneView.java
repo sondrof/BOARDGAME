@@ -2,11 +2,9 @@ package view.scenes;
 
 import controller.SceneManager;
 import controller.controllers.StartMenuController;
-import modell.gameboard.GameBoardFactory.BoardType;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;

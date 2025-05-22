@@ -5,7 +5,7 @@ import modell.tiles.Tile;
 import modell.tiles.TileLogic;
 
 public class GameboardLogic {
-    private static final int BOARD_SIZE = 100;
+    private static final int BOARD_SIZE = 90;
 
     public void handlePlayerLanding(Player player, TileLogic tileLogic) {
         int currentPos = player.getPlayerPosition();
