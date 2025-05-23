@@ -23,8 +23,8 @@ public abstract class AbstractScene {
     setScene(scene);
   }
 
-  public void onEnter() {} //Her kan vi loade save files, ressurser/sprites og alt av random ting som skjer i loading screens.
-  public void onExit() {} // Når senen skal lukkes, hvor vi kan f.eks save daten før man lokker senen. Exit loading screen typ.
+  public void onEnter() {}
+  public void onExit() {}
 
   public Scene getScene() {
     return scene;

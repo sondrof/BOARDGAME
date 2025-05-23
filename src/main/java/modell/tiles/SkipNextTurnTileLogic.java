@@ -1,4 +1,3 @@
-// SkipNextTurnTileLogic.java
 package modell.tiles;
 
 import java.util.Map;

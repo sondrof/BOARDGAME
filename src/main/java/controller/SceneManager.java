@@ -1,9 +1,12 @@
 package controller;
 
-import view.scenes.AbstractScene;
-import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.stage.Stage;
+import modell.exceptions.SceneNotRegisteredException;
+import view.scenes.AbstractScene;
+
+
 
 /**
  * Manages scene transitions and scene lifecycle in the application.
@@ -15,17 +18,16 @@ import java.util.Map;
  * @author Sondre Odberg
  * @version 1.0
  */
+
 public class SceneManager {
-  /** The JavaFX stage that hosts the scenes */
+  /** The JavaFX stage that hosts the scenes. */
   private final Stage stage;
 
-  /** Registry of all available scenes, mapped by their names */
+  /** Registry of all available scenes, mapped by their names. */
   private final Map<String, AbstractScene> scenes = new HashMap<>();
 
-  /** The currently active scene */
+  /** The currently active scene. */
   private AbstractScene currentScene;
-  //TODO oppgradere constructor osv
-  //TODO få inn custom exception på scene bytte? SceneLoadException/SceneSaveException
 
   /**
    * Constructs a new SceneManager with the specified stage.
@@ -57,10 +59,17 @@ public class SceneManager {
    * @param name The name of the scene to switch to
    * @throws RuntimeException if the specified scene is not registered
    */
+
   public void switchTo(String name) {
-    if (currentScene != null) currentScene.onExit();
+    if (currentScene != null) {
+      currentScene.onExit();
+    }
+
     AbstractScene next = scenes.get(name);
-    if (next == null) throw new RuntimeException("Scene not registered: " + name);
+    if (next == null) {
+      throw new SceneNotRegisteredException(name);
+    }
+
     currentScene = next;
     stage.setScene(currentScene.getScene());
     currentScene.onEnter();

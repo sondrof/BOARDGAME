@@ -1,18 +1,14 @@
 package controller.controllers;
 
-import javafx.scene.layout.StackPane;
-import modell.tiles.LadderTileLogic;
-import modell.tiles.TileLogic;
-import view.ui.PlayerRenderer;
-import view.ui.ResourceLoader;
-
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.layout.StackPane;
+import modell.tiles.LadderTileLogic;
+import modell.tiles.TileLogic;
+import view.ui.PlayerRenderer;
+
 
 /**
  * Controller responsible for managing UI elements and their visual representation.
@@ -22,11 +18,11 @@ import java.util.Map;
  * @author Sondre Odberg
  * @version 1.0
  */
-public class UIElementController {
-  /** Renderer responsible for drawing players on the board */
+public class UiElementController {
+  /** Renderer responsible for drawing players on the board. */
   private final PlayerRenderer playerRenderer = new PlayerRenderer();
 
-  /** Map tracking the current position of each player on the board */
+  /** Map tracking the current position of each player on the board. */
   private final Map<Integer, Integer> playerPositions = new HashMap<>();
 
   /**
@@ -63,8 +59,13 @@ public class UIElementController {
       Map<Integer, Integer> ladderMap = ladderLogic.getLadderMap();
       int offset = ladderMap.getOrDefault(tileNumber, 0);
 
-      if (offset > 0) return "ladder_up_bottom.png";
-      if (offset < 0) return "ladder_down_top.png";
+      if (offset > 0) {
+        return "ladder_up_bottom.png";
+      }
+
+      if (offset < 0) {
+        return "ladder_down_top.png";
+      }
 
       for (Map.Entry<Integer, Integer> entry : ladderMap.entrySet()) {
         int start = entry.getKey();

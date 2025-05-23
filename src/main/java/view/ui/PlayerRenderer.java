@@ -1,10 +1,10 @@
 package view.ui;
 
+import java.util.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
-import java.util.*;
 
 /**
  * Utility class for rendering player tokens on the game board.
@@ -44,16 +44,19 @@ public class PlayerRenderer {
 
 
     for (StackPane tile : tileNodes.values()) {
-      tile.getChildren().removeIf(node -> node instanceof ImageView && "player".equals(node.getUserData()));
+      tile.getChildren().removeIf(node -> node instanceof ImageView
+          && "player".equals(node.getUserData()));
     }
     if (startTile != null) {
-      startTile.getChildren().removeIf(node -> node instanceof ImageView && "player".equals(node.getUserData()));
+      startTile.getChildren().removeIf(node -> node instanceof ImageView
+          && "player".equals(node.getUserData()));
     }
 
 
     Map<Integer, List<Integer>> playersPerTile = new HashMap<>();
     for (Map.Entry<Integer, Integer> entry : playerPositions.entrySet()) {
-      playersPerTile.computeIfAbsent(entry.getValue(), k -> new ArrayList<>()).add(entry.getKey());
+      playersPerTile.computeIfAbsent(entry.getValue(),
+          k -> new ArrayList<>()).add(entry.getKey());
     }
 
 
@@ -62,7 +65,9 @@ public class PlayerRenderer {
       List<Integer> playerIds = entry.getValue();
 
       StackPane target = (pos == 0) ? startTile : tileNodes.get(pos);
-      if (target == null) continue;
+      if (target == null) {
+        continue;
+      }
 
       for (int i = 0; i < playerIds.size(); i++) {
         int playerId = playerIds.get(i);

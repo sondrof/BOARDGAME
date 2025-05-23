@@ -13,9 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import view.ui.ResourceLoader;
-import view.ui.UIFactory;
-
-import static view.ui.UIFactory.button;
+import static view.ui.UiFactory.button;
 
 /**
  * Scene view for the main ladder game interface.

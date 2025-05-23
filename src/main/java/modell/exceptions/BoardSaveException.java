@@ -9,13 +9,13 @@ package modell.exceptions;
  * @version 1.0
  */
 public class BoardSaveException extends Exception {
-    /**
-     * Constructs a new BoardSaveException with the specified detail message and cause.
-     *
-     * @param message the detail message (which is saved for later retrieval by the getMessage() method)
-     * @param cause the cause (which is saved for later retrieval by the getCause() method)
-     */
-    public BoardSaveException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Constructs a new BoardSaveException with the specified detail message and cause.
+   *
+   * @param message the detail message (which is saved for later retrieval by the getMessage() method)
+   * @param cause the cause (which is saved for later retrieval by the getCause() method)
+   */
+  public BoardSaveException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

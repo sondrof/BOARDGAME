@@ -9,13 +9,13 @@ package modell.exceptions;
  * @version 1.0
  */
 public class BoardLoadException extends Exception {
-    /**
-     * Constructs a new BoardLoadException with the specified detail message and cause.
-     *
-     * @param message the detail message (which is saved for later retrieval by the getMessage() method)
-     * @param cause the cause (which is saved for later retrieval by the getCause() method)
-     */
-    public BoardLoadException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Constructs a new BoardLoadException with the specified detail message and cause.
+   *
+   * @param message the detail message (which is saved for later retrieval by the getMessage() method)
+   * @param cause the cause (which is saved for later retrieval by the getCause() method)
+   */
+  public BoardLoadException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

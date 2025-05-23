@@ -1,63 +1,51 @@
 package view;
 
+import controller.SceneManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import controller.SceneManager;
 import view.scenes.StartMenuSceneView;
 
 /**
- * Main application class for the board game.
- * Extends JavaFX Application to provide the primary window and scene management.
- *
- * <p>This class handles:
+ * Main entry point for the board game application.
+ * Initializes the primary stage and configures the SceneManager
+ * to display the start menu scene.
+ * <p></p>
+ * Responsibilities:
  * <ul>
- *     <li>Application initialization and startup</li>
- *     <li>Primary stage configuration</li>
- *     <li>Scene manager setup</li>
- *     <li>Initial scene registration and display</li>
+ *   <li>Initialize JavaFX Application lifecycle</li>
+ *   <li>Register and display the "startMenu" scene</li>
+ *   <li>Show the primary stage with application title and dimensions</li>
  * </ul>
  *
  * @author didrik
  * @version 1.0
  */
 public class BoardGameView extends Application {
-    /** The scene manager responsible for handling scene transitions */
-    private SceneManager sceneManager;
 
-    /**
-     * Initializes and starts the application.
-     * Sets up the primary stage, scene manager, and initial scene.
-     *
-     * @param primaryStage The primary stage provided by JavaFX
-     */
-    @Override
-    public void start(Stage primaryStage) {
-        // Initialize the scene manager
-        sceneManager = new SceneManager(primaryStage);
+  /**
+   * Called when the application is launched.
+   * Sets up the SceneManager, registers the start menu,
+   * and shows the primary stage.
+   *
+   * @param primaryStage the primary stage for this application
+   */
+  @Override
+  public void start(Stage primaryStage) {
+    SceneManager sceneManager = new SceneManager(primaryStage);
+    sceneManager.registerScene("startMenu", new StartMenuSceneView(sceneManager));
+    sceneManager.switchTo("startMenu");
+    primaryStage.setTitle("Board Game");
+    primaryStage.setWidth(1000);
+    primaryStage.setHeight(750);
+    primaryStage.show();
+  }
 
-        // Set up the primary stage
-        primaryStage.setTitle("Board Game");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(750);
-        primaryStage.setResizable(false);
-
-        // Register the start menu scene
-        sceneManager.registerScene("startMenu", new StartMenuSceneView(sceneManager));
-
-        // Switch to the start menu scene
-        sceneManager.switchTo("startMenu");
-
-        // Show the stage
-        primaryStage.show();
-    }
-
-    /**
-     * Main entry point for the application.
-     * Launches the JavaFX application.
-     *
-     * @param args Command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+  /**
+   * Main method. Launches the JavaFX application.
+   *
+   * @param args command-line arguments (not used)
+   */
+  public static void main(String[] args) {
+    launch(args);
+  }
 }

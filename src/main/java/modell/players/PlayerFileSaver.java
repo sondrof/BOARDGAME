@@ -1,7 +1,6 @@
 package modell.players;
 
 import modell.exceptions.PlayerSaveException;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;

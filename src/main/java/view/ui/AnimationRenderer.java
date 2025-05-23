@@ -1,16 +1,14 @@
-// src/main/java/view/ui/AnimationRenderer.java
 package view.ui;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 /**
  * Utility class for handling game animations in the view layer.
@@ -29,7 +27,7 @@ import java.util.stream.IntStream;
 public class AnimationRenderer {
 
   /**
-   * Plays a dice roll animation on two ImageView components.
+   * Plays a die roll animation on two ImageView components.
    * The animation shows random dice faces changing rapidly before settling on the final values.
    *
    * <p>The animation sequence:
@@ -46,13 +44,13 @@ public class AnimationRenderer {
    */
   public static void playDiceRoll(ImageView die1,
                                   ImageView die2,
-                                  java.util.function.BiConsumer<Integer,Integer> onDone) {
-    // Last inn alle seks ansikter:
+                                  java.util.function.BiConsumer<Integer, Integer> onDone) {
+
     List<Image> faces = IntStream.rangeClosed(1, 6)
             .mapToObj(i -> ResourceLoader.getDiceImage("die_" + i + ".png"))
             .collect(Collectors.toList());
 
-    // Timeline: bytt ansikt hvert 80ms, 12 ganger
+
     Timeline t = new Timeline(
             new KeyFrame(Duration.ZERO, e -> {
               die1.setImage(faces.get(ThreadLocalRandom.current().nextInt(6)));
@@ -62,11 +60,13 @@ public class AnimationRenderer {
     );
     t.setCycleCount(12);
     t.setOnFinished(e -> {
-      // Når animasjonen er ferdig: gjør selve kastet
-      int a = ThreadLocalRandom.current().nextInt(1,7);
-      int b = ThreadLocalRandom.current().nextInt(1,7);
+
+      int a = ThreadLocalRandom.current().nextInt(1, 7);
+      int b = ThreadLocalRandom.current().nextInt(1, 7);
       onDone.accept(a, b);
     });
     t.play();
   }
+
+  private AnimationRenderer() {}
 }

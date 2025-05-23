@@ -34,11 +34,11 @@ public class GameControllerFactory {
     switch (gameType.toLowerCase()) {
       case "ladder":
         return new LadderGameController(sceneManager, players, gameMode);
-      // Add more game types here as they are implemented
       default:
         throw new IllegalArgumentException("Unsupported game type: " + gameType);
     }
   }
 
-  public GameControllerFactory() {}
+  public GameControllerFactory() {
+  }
 }

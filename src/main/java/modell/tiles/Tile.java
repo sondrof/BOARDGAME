@@ -33,7 +33,7 @@ public abstract class Tile {
    * @param tileNumber the number of the tile (must be between 1 and {@value #MAX_TILE_NUMBER})
    * @throws IllegalArgumentException if tileNumber is not positive or exceeds {@value #MAX_TILE_NUMBER}
    */
-  public Tile(int tileNumber) {
+  protected Tile(int tileNumber) {
     if (tileNumber < 0) {
       throw new IllegalArgumentException("Tile number cannot be negative, got: " + tileNumber);
     }

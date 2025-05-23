@@ -95,7 +95,6 @@ public class GameSetupController {
       model.validateGameSetup();
       List<Player> players = model.createPlayers();
 
-      // Create appropriate game controller based on game type and mode
       AbstractGameController gameController = GameControllerFactory.createGameController(
           model.getGameType(),
           sceneManager,
@@ -103,11 +102,9 @@ public class GameSetupController {
           model.getGameMode()
       );
 
-      // Register and switch to the game scene
       sceneManager.registerScene("game", new LadderGameSceneView(gameController));
       sceneManager.switchTo("game");
 
-      // Launch the game with the selected board type
       if (gameController instanceof LadderGameController ladderController) {
         ladderController.launchGame(selectedBoardType, null);
       }
@@ -129,7 +126,6 @@ public class GameSetupController {
         return;
       }
 
-      // Create game controller with loaded players
       AbstractGameController gameController = GameControllerFactory.createGameController(
           model.getGameType(),
           sceneManager,

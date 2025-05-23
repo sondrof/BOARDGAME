@@ -1,12 +1,11 @@
-// ResourceLoader.java
 package view.ui;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 
 /**
  * Utility class for managing and loading game resources.
@@ -45,7 +44,9 @@ public final class ResourceLoader {
    * @return The loaded Image, or a fallback image if loading fails
    */
   public static Image getImage(String fullPath) {
-    if (imageCache.containsKey(fullPath)) return imageCache.get(fullPath);
+    if (imageCache.containsKey(fullPath)) {
+      return imageCache.get(fullPath);
+    }
 
     try (InputStream stream = ResourceLoader.class.getResourceAsStream(fullPath)) {
       if (stream == null) {
@@ -70,7 +71,9 @@ public final class ResourceLoader {
    */
   public static ImageView getIcon(String fullPath, double size) {
     Image image = getImage(fullPath);
-    if (image == null) return null;
+    if (image == null) {
+      return null;
+    }
 
     ImageView view = new ImageView(image);
     view.setFitWidth(size);
@@ -103,40 +106,35 @@ public final class ResourceLoader {
     }
   }
 
-  /**
-   * Preloads all assets required for the Spill2 game scene.
-   * Includes backgrounds, board tile(s), player tokens, and dice faces.
-   */
-  public static void preloadSpill2Assets() {
-    // Scene background
-    getBackground("start_background.png");
-    // If you have a custom Spill2 background, add it here:
-    // getBackground("spill2_background.png");
-
-    // Board tiles (if Spill2 uses tiles; adjust filenames as needed)
-    getTileImage("basicTile.png");
-    // ... any other Spill2-specific tile images
-
-    // Player icons (reuse existing ones)
-    getPlayerIcon("player1.png");
-    getPlayerIcon("player2.png");
-
-    // Dice faces
-    for (int i = 1; i <= 6; i++) {
-      getDiceImage("die_" + i + ".png");
-    }
+  public static Image getDiceImage(String fileName) {
+    return getImage(DICE_PATH      + fileName);
   }
 
-  // === Category-specific resource accessors ===
+  public static Image getPlayerIcon(String fileName) {
+    return getImage(PLAYER_PATH    + fileName);
+  }
 
-  public static Image    getDiceImage     (String fileName)                      { return getImage(DICE_PATH      + fileName); }
-  public static Image    getPlayerIcon    (String fileName)                      { return getImage(PLAYER_PATH    + fileName); }
-  public static ImageView getPlayerIconView(String fileName, double size)         { return getIcon(PLAYER_PATH    + fileName, size); }
-  public static ImageView getDiceIcon     (String fileName, double size)         { return getIcon(DICE_PATH      + fileName, size); }
-  public static Image    getTileImage     (String fileName)                      { return getImage(TILE_PATH      + fileName); }
-  public static ImageView getTileIcon     (String fileName, double size)         { return getIcon(TILE_PATH      + fileName, size); }
-  public static Image    getButtonImage   (String fileName)                      { return getImage(BUTTON_PATH    + fileName); }
-  public static ImageView getButtonIcon   (String fileName, double size)         { return getIcon(BUTTON_PATH    + fileName, size); }
-  public static Image    getBackground    (String fileName)                      { return getImage(BACKGROUND_PATH+ fileName); }
-  public static Image    getLadderSprite  ()                                      { return getImage(TILE_PATH + "ladder_sprite.png"); }
+  public static Image getTileImage(String fileName) {
+    return getImage(TILE_PATH      + fileName);
+  }
+
+  public static ImageView getTileIcon(String fileName, double size) {
+    return getIcon(TILE_PATH      + fileName, size);
+  }
+
+  public static Image getButtonImage(String fileName) {
+    return getImage(BUTTON_PATH    + fileName);
+  }
+
+  public static ImageView getButtonIcon(String fileName, double size) {
+    return getIcon(BUTTON_PATH    + fileName, size);
+  }
+
+  public static Image getBackground(String fileName) {
+    return getImage(BACKGROUND_PATH +  fileName);
+  }
+
+  public static Image getLadderSprite() {
+    return getImage(TILE_PATH + "ladder_sprite.png");
+  }
 }

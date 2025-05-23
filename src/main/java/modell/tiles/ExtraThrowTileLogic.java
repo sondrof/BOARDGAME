@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
  * <pre>
  * ExtraThrowTileLogic logic = new ExtraThrowTileLogic();
  * logic.addExtraThrowTile(8);                     // Enable extra throw on tile 8
- * Map<Integer,Integer> extras = logic.getExtraThrowMap();
  * </pre>
  *
  * @author didrik
@@ -45,7 +44,7 @@ public class ExtraThrowTileLogic extends TileLogic {
    *
    * @return a map of tile numbers to effect values for ExtraThrowTile
    */
-  public Map<Integer,Integer> getExtraThrowMap() {
+  public Map<Integer, Integer> getExtraThrowMap() {
     return tiles.stream()
         .filter(t -> t instanceof ExtraThrowTile)
         .collect(Collectors.toMap(

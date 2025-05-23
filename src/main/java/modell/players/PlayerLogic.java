@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class PlayerLogic {
 
   /** The dice set used for player movements */
-  private DiceSet diceSet;
+  private final DiceSet diceSet;
   /** The list of all players in the game */
   private ArrayList<Player> playerList = new ArrayList<>();
 
@@ -51,15 +51,6 @@ public class PlayerLogic {
     playerList.add(new Player(name, PlayerToken.DEFAULT));
   }
 
-  /**
-   * Prints the current status of all players to the console.
-   * Displays each player's name and current position on the board.
-   */
-  public void printPlayerStatus() {
-    for (Player player : playerList) {
-      System.out.println("Player " + player.getName() + " on tile " + player.getPlayerPosition());
-    }
-  }
 
   /**
    * Generates a specified number of players with default names.
@@ -100,12 +91,4 @@ public class PlayerLogic {
     System.out.println(player.getName() + " rolled " + roll + ", moved to position " + player.getPlayerPosition());
   }
 
-  /**
-   * Returns the dice set used for player movements.
-   *
-   * @return the dice set
-   */
-  public DiceSet getDiceSet() {
-    return diceSet;
-  }
 }

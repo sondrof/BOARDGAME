@@ -1,4 +1,3 @@
-// src/main/java/controller/controllers/PhaseSetupHelper.java
 package controller.controllers;
 
 import modell.gameboard.GamePhase;

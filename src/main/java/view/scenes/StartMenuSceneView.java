@@ -1,27 +1,21 @@
-// StartMenuSceneView.java
 package view.scenes;
 
 import controller.SceneManager;
 import controller.controllers.StartMenuController;
-import controller.controllers.AbstractGameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import view.ui.ResourceLoader;
-import view.ui.UIFactory;
 
-import static view.ui.UIFactory.button;
 
 /**
  * Scene view for the main start menu.
  * Provides buttons to launch different game modes including the new Spill2.
- * <p>
- * Layout includes:
+ *
+ * <p>Layout includes:
  * <ul>
  *   <li>Game logo</li>
  *   <li>Buttons for each game mode</li>
