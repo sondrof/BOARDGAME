@@ -35,4 +35,5 @@ public class StartMenuController {
     sceneManager.registerScene("gameSetup", setupScene);
     sceneManager.switchTo("gameSetup");
   }
+
 }

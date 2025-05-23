@@ -276,6 +276,8 @@ public class LadderGameController extends AbstractGameController implements Phas
     phaseController.startPhase();
   }
 
+
+
   /**
    * Animates the movement of a player token from one tile to another.
    *

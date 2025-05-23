@@ -1,9 +1,8 @@
-// src/main/java/controller/controllers/GamePhaseController.java
 package controller.controllers;
 
-import modell.gameboard.GamePhase;
 import java.util.EnumMap;
 import java.util.Map;
+import modell.gameboard.GamePhase;
 
 /**
  * Controller responsible for managing the game phases and their transitions.
@@ -15,10 +14,10 @@ import java.util.Map;
  * @version 1.0
  */
 public class GamePhaseController {
-  /** The current phase of the game */
+  /** The current phase of the game. */
   private GamePhase currentPhase = GamePhase.IDLE;
 
-  /** Map of game phases to their associated actions */
+  /** Map of game phases to their associated actions. */
   private final Map<GamePhase, Runnable> phaseActions = new EnumMap<>(GamePhase.class);
 
   /**
@@ -37,7 +36,9 @@ public class GamePhaseController {
    */
   public void startPhase() {
     Runnable action = phaseActions.get(currentPhase);
-    if (action != null) action.run();
+    if (action != null) {
+      action.run();
+    }
   }
 
   /**
@@ -46,25 +47,24 @@ public class GamePhaseController {
    */
   public void nextPhase() {
     switch (currentPhase) {
-      case IDLE:         currentPhase = GamePhase.ROLL_DICE;    break;
-      case ROLL_DICE:    currentPhase = GamePhase.MOVE_PLAYER;  break;
-      case MOVE_PLAYER:  currentPhase = GamePhase.SPECIAL_TILE; break;
-      case SPECIAL_TILE: currentPhase = GamePhase.IDLE;         break;
+      case IDLE:
+        currentPhase = GamePhase.ROLL_DICE;
+        break;
+
+      case ROLL_DICE:
+        currentPhase = GamePhase.MOVE_PLAYER;
+        break;
+
+      case MOVE_PLAYER:
+        currentPhase = GamePhase.SPECIAL_TILE;
+        break;
+
+      case SPECIAL_TILE:
+        currentPhase = GamePhase.IDLE;
+        break;
+
+      default:
     }
     startPhase();
   }
-
-  /**
-   * Gets the current game phase.
-   *
-   * @return The current GamePhase
-   */
-  public GamePhase getCurrentPhase() { return currentPhase; }
-
-  /**
-   * Sets the current game phase.
-   *
-   * @param phase The GamePhase to set as current
-   */
-  public void setCurrentPhase(GamePhase phase) { this.currentPhase = phase; }
 }

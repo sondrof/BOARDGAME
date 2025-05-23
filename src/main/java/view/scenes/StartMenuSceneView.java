@@ -1,35 +1,41 @@
+// StartMenuSceneView.java
 package view.scenes;
 
 import controller.SceneManager;
 import controller.controllers.StartMenuController;
-
+import controller.controllers.AbstractGameController;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.*;
-import javafx.geometry.Pos;
-import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import view.ui.ResourceLoader;
+import view.ui.UIFactory;
+
+import static view.ui.UIFactory.button;
 
 /**
- * Scene view for the application's main menu interface.
- * Provides the entry point for users to start new games or access different game modes.
- *
- * <p>This scene offers:
+ * Scene view for the main start menu.
+ * Provides buttons to launch different game modes including the new Spill2.
+ * <p>
+ * Layout includes:
  * <ul>
- *     <li>Game mode selection buttons</li>
- *     <li>Visual feedback for available and upcoming features</li>
- *     <li>Resource preloading for smooth transitions</li>
+ *   <li>Game logo</li>
+ *   <li>Buttons for each game mode</li>
  * </ul>
  *
  * @author Sondre Odberg
- * @version 1.0
+ * @version 1.1
  */
 public class StartMenuSceneView extends AbstractScene {
 
   public StartMenuSceneView(SceneManager manager) {
     super("startMenu", buildScene(manager));
   }
+
 
   private static Scene buildScene(SceneManager manager) {
     StartMenuController controller = new StartMenuController(manager);
@@ -42,18 +48,18 @@ public class StartMenuSceneView extends AbstractScene {
     Button otherGameButton = new Button("Other Game (Coming Soon)");
     otherGameButton.setGraphic(ResourceLoader.getButtonIcon("roll_button.png", 24));
     otherGameButton.setContentDisplay(ContentDisplay.LEFT);
-    otherGameButton.setDisable(true); // Disable until implemented
+    otherGameButton.setDisable(true);
 
     VBox layout = new VBox(20, ladderGameButton, otherGameButton);
     layout.setAlignment(Pos.CENTER);
     layout.setPadding(new Insets(20));
 
     BackgroundImage bg = new BackgroundImage(
-            ResourceLoader.getBackground("start_background.png"),
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.DEFAULT,
-            new BackgroundSize(100, 100, true, true, true, true)
+        ResourceLoader.getBackground("start_background.png"),
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundPosition.DEFAULT,
+        new BackgroundSize(100, 100, true, true, true, true)
     );
     layout.setBackground(new Background(bg));
 
