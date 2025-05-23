@@ -1,3 +1,4 @@
+// ResourceLoader.java
 package view.ui;
 
 import javafx.scene.image.Image;
@@ -6,7 +7,6 @@ import javafx.scene.image.ImageView;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Utility class for managing and loading game resources.
@@ -23,18 +23,18 @@ import java.util.Objects;
  * @author Sondre Odberg
  * @version 1.0
  */
-public class ResourceLoader {
+public final class ResourceLoader {
 
-  private static final String PLAYER_PATH = "/player/";
-  private static final String TILE_PATH = "/tile/";
-  private static final String BUTTON_PATH = "/button/";
+  private static final String PLAYER_PATH     = "/player/";
+  private static final String TILE_PATH       = "/tile/";
+  private static final String BUTTON_PATH     = "/button/";
   private static final String BACKGROUND_PATH = "/background/";
-  private static final String DICE_PATH = "/dice/";
+  private static final String DICE_PATH       = "/dice/";
 
   private static final Map<String, Image> imageCache = new HashMap<>();
 
   private ResourceLoader() {
-    // Private constructor to prevent instantiation
+    // Prevent instantiation
   }
 
   /**
@@ -49,14 +49,14 @@ public class ResourceLoader {
 
     try (InputStream stream = ResourceLoader.class.getResourceAsStream(fullPath)) {
       if (stream == null) {
-        System.err.println("Mangler bilde: " + fullPath);
+        System.err.println("Missing resource: " + fullPath);
         return getImage("/fallback/missing.png"); // fallback
       }
       Image img = new Image(stream);
       imageCache.put(fullPath, img);
       return img;
     } catch (Exception e) {
-      System.err.println("Feil ved lasting av bilde: " + fullPath);
+      System.err.println("Error loading resource: " + fullPath);
       return getImage("/fallback/missing.png");
     }
   }
@@ -65,7 +65,7 @@ public class ResourceLoader {
    * Creates an ImageView with the specified image and size.
    *
    * @param fullPath The full path to the image resource
-   * @param size The desired size for the image (width and height)
+   * @param size     The desired size for the image (width and height)
    * @return An ImageView configured with the specified image and size
    */
   public static ImageView getIcon(String fullPath, double size) {
@@ -94,6 +94,7 @@ public class ResourceLoader {
   public static void preloadLadderGameAssets() {
     getTileImage("basicTile.png");
     getTileImage("ladder_up.png");
+    getTileImage("snake.png");
     getPlayerIcon("player1.png");
     getPlayerIcon("player2.png");
     getBackground("ladder_background.png");
@@ -103,105 +104,39 @@ public class ResourceLoader {
   }
 
   /**
-   * Loads a dice face image.
-   *
-   * @param fileName The name of the dice face image file
-   * @return The loaded dice face image
+   * Preloads all assets required for the Spill2 game scene.
+   * Includes backgrounds, board tile(s), player tokens, and dice faces.
    */
-  public static Image getDiceImage(String fileName) {
-    return getImage(DICE_PATH + fileName);
+  public static void preloadSpill2Assets() {
+    // Scene background
+    getBackground("start_background.png");
+    // If you have a custom Spill2 background, add it here:
+    // getBackground("spill2_background.png");
+
+    // Board tiles (if Spill2 uses tiles; adjust filenames as needed)
+    getTileImage("basicTile.png");
+    // ... any other Spill2-specific tile images
+
+    // Player icons (reuse existing ones)
+    getPlayerIcon("player1.png");
+    getPlayerIcon("player2.png");
+
+    // Dice faces
+    for (int i = 1; i <= 6; i++) {
+      getDiceImage("die_" + i + ".png");
+    }
   }
 
-  /**
-   * Loads a player icon image.
-   *
-   * @param fileName The name of the player icon file
-   * @return The loaded player icon image
-   */
-  public static Image getPlayerIcon(String fileName) {
-    return getImage(PLAYER_PATH + fileName);
-  }
+  // === Category-specific resource accessors ===
 
-  /**
-   * Creates an ImageView for a player icon with the specified size.
-   *
-   * @param fileName The name of the player icon file
-   * @param size The desired size for the icon
-   * @return An ImageView configured with the player icon
-   */
-  public static ImageView getPlayerIconView(String fileName, double size) {
-    return getIcon(PLAYER_PATH + fileName, size);
-  }
-
-  /**
-   * Creates an ImageView for a dice icon with the specified size.
-   *
-   * @param fileName The name of the dice icon file
-   * @param size The desired size for the icon
-   * @return An ImageView configured with the dice icon
-   */
-  public static ImageView getDiceIcon(String fileName, double size) {
-    return getIcon(DICE_PATH + fileName, size);
-  }
-
-  /**
-   * Loads a tile image.
-   *
-   * @param fileName The name of the tile image file
-   * @return The loaded tile image
-   */
-  public static Image getTileImage(String fileName) {
-    return getImage(TILE_PATH + fileName);
-  }
-
-  /**
-   * Creates an ImageView for a tile icon with the specified size.
-   *
-   * @param fileName The name of the tile icon file
-   * @param size The desired size for the icon
-   * @return An ImageView configured with the tile icon
-   */
-  public static ImageView getTileIcon(String fileName, double size) {
-    return getIcon(TILE_PATH + fileName, size);
-  }
-
-  /**
-   * Loads a button image.
-   *
-   * @param fileName The name of the button image file
-   * @return The loaded button image
-   */
-  public static Image getButtonImage(String fileName) {
-    return getImage(BUTTON_PATH + fileName);
-  }
-
-  /**
-   * Creates an ImageView for a button icon with the specified size.
-   *
-   * @param fileName The name of the button icon file
-   * @param size The desired size for the icon
-   * @return An ImageView configured with the button icon
-   */
-  public static ImageView getButtonIcon(String fileName, double size) {
-    return getIcon(BUTTON_PATH + fileName, size);
-  }
-
-  /**
-   * Loads a background image.
-   *
-   * @param fileName The name of the background image file
-   * @return The loaded background image
-   */
-  public static Image getBackground(String fileName) {
-    return getImage(BACKGROUND_PATH + fileName);
-  }
-
-  /**
-   * Loads the ladder sprite image used for rendering ladders on the game board.
-   *
-   * @return The loaded ladder sprite image
-   */
-  public static Image getLadderSprite() {
-    return getImage("/tile/ladder_sprite.png"); // eks: 20x100 px stige
-  }
+  public static Image    getDiceImage     (String fileName)                      { return getImage(DICE_PATH      + fileName); }
+  public static Image    getPlayerIcon    (String fileName)                      { return getImage(PLAYER_PATH    + fileName); }
+  public static ImageView getPlayerIconView(String fileName, double size)         { return getIcon(PLAYER_PATH    + fileName, size); }
+  public static ImageView getDiceIcon     (String fileName, double size)         { return getIcon(DICE_PATH      + fileName, size); }
+  public static Image    getTileImage     (String fileName)                      { return getImage(TILE_PATH      + fileName); }
+  public static ImageView getTileIcon     (String fileName, double size)         { return getIcon(TILE_PATH      + fileName, size); }
+  public static Image    getButtonImage   (String fileName)                      { return getImage(BUTTON_PATH    + fileName); }
+  public static ImageView getButtonIcon   (String fileName, double size)         { return getIcon(BUTTON_PATH    + fileName, size); }
+  public static Image    getBackground    (String fileName)                      { return getImage(BACKGROUND_PATH+ fileName); }
+  public static Image    getLadderSprite  ()                                      { return getImage(TILE_PATH + "ladder_sprite.png"); }
 }
